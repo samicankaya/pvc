@@ -1,0 +1,1179 @@
+<title>Prestij PVC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* =========================================================
+   PRESTİJ PVC — Tek Sayfa Kurumsal Site
+   1) Tokenlar  2) Temel  3) Yardımcı sınıflar  4) Header
+   5) Hero  6) Neden Biz  7) Hizmetler  8) İletişim  9) Footer
+   10) Yüzen butonlar  11) Animasyonlar  12) Responsive
+   ========================================================= */
+
+/* ---------- 1) TOKENLAR ---------------------------------- */
+:root{
+  /* Yüzeyler — nötrler hafif mavi kırılımlı */
+  --ground:#F5F7FC;
+  --surface:#FFFFFF;
+  --surface-2:#EDF1FA;
+  --line:#D8E0F0;
+  --line-soft:#E7ECF7;
+
+  /* Metin */
+  --ink:#0C1526;
+  --ink-soft:#4A5878;
+  --ink-faint:#7C89A6;
+
+  /* Marka */
+  --brand:#1E3A8A;        /* dolu zeminler     */
+  --brand-deep:#14285F;   /* koyu varyant      */
+  --brand-text:#1E3A8A;   /* zemin üstü yazı   */
+  --brand-tint:#E7EDFB;   /* yumuşak dolgu     */
+
+  /* Vurgu */
+  --accent:#F59E0B;
+  --accent-hi:#FFC24D;
+  --accent-ink:#3A2703;
+  --accent-text:#A9660A;   /* beyaz zeminde okunur amber */
+
+  --ok:#0F7A57;
+  --danger:#C93A2C;
+
+  /* Ölçü ve gölge */
+  --radius:14px;
+  --shadow-1:0 1px 2px rgba(12,21,38,.06), 0 8px 24px -12px rgba(12,21,38,.18);
+  --shadow-2:0 18px 44px -18px rgba(30,58,138,.42), 0 4px 12px rgba(12,21,38,.08);
+  --maxw:1200px;
+  --gutter:clamp(18px, 4vw, 40px);
+  --sect-y:clamp(64px, 8vw, 116px);
+
+  /* Tipografi */
+  --font-display:"Archivo", "Segoe UI", Arial, sans-serif;
+  --font-body:"IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+  --font-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+
+  /* Header ölçüleri */
+  --header-h:96px;
+  --logo:64px;
+
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+
+/* Not: Site tek temaya (beyaz) sabitlenmiştir; cihazın koyu tema
+   ayarından etkilenmemesi için renk şeması burada kilitlenir. */
+:root{ color-scheme:light; }
+
+/* ---------- 2) TEMEL ------------------------------------- */
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{
+  scroll-behavior:smooth;      /* Menü linkleri için yumuşak kayma */
+  scroll-padding-top:calc(var(--header-h) + 16px);   /* Sabit header payı */
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:clamp(15.5px,.35vw + 15px,17px);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button,input,textarea,select{ font:inherit; color:inherit; }
+
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-weight:800;
+  line-height:1.08;
+  letter-spacing:-.02em;
+  text-wrap:balance;
+  margin:0;
+}
+h1{ font-size:clamp(2.3rem,5.4vw,4.15rem); }
+h2{ font-size:clamp(1.85rem,3.4vw,2.85rem); }
+h3{ font-size:clamp(1.12rem,1.4vw,1.3rem); letter-spacing:-.01em; }
+p{ margin:0; }
+
+:focus-visible{ outline:3px solid var(--accent); outline-offset:3px; border-radius:6px; }
+::selection{ background:var(--accent); color:var(--accent-ink); }
+
+/* ---------- 3) YARDIMCI SINIFLAR ------------------------- */
+.container{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--gutter); }
+.section{ padding-block:var(--sect-y); position:relative; }
+.section--alt{ background:var(--surface-2); }
+
+.skip-link{
+  position:absolute; left:-9999px; top:0; z-index:200;
+  background:var(--accent); color:var(--accent-ink);
+  padding:12px 18px; border-radius:0 0 10px 0; font-weight:700;
+}
+.skip-link:focus{ left:0; }
+
+/* Mono etiket — teknik föy dili */
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:.74rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--brand-text);
+  display:inline-flex; align-items:center; gap:10px;
+  margin:0 0 14px;
+}
+.eyebrow::before{ content:""; width:26px; height:2px; background:var(--accent); flex:none; }
+
+.sect-head{ max-width:62ch; margin-bottom:clamp(34px,4vw,54px); }
+.sect-head p{ color:var(--ink-soft); margin-top:14px; font-size:1.03rem; }
+.lead{ color:var(--ink-soft); font-size:clamp(1rem,1.1vw,1.12rem); }
+
+/* --- Butonlar --- */
+.btn{
+  position:relative; overflow:hidden; isolation:isolate;
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:15px 28px; border-radius:999px; border:2px solid transparent;
+  font-family:var(--font-display); font-weight:700; font-size:.98rem;
+  cursor:pointer; text-align:center;
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease),
+             background-color .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease);
+}
+.btn svg{ width:19px; height:19px; flex:none; }
+
+/* Hover'da geçen parlama bandı */
+.btn::before{
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(110deg,transparent 22%,rgba(255,255,255,.55) 45%,transparent 68%);
+  transform:translateX(-130%);
+  transition:transform .75s var(--ease);
+}
+.btn:hover::before{ transform:translateX(130%); }
+.btn:hover{ transform:translateY(-3px); }
+.btn:active{ transform:translateY(-1px) scale(.985); }
+
+.btn--accent{ background:var(--accent); color:var(--accent-ink); box-shadow:0 12px 26px -12px rgba(245,158,11,.9); }
+.btn--accent:hover{ background:var(--accent-hi); box-shadow:0 20px 38px -14px rgba(245,158,11,.95); }
+
+.btn--brand{ background:var(--brand); color:#fff; box-shadow:0 12px 26px -14px rgba(30,58,138,.85); }
+.btn--brand:hover{ background:var(--brand-deep); box-shadow:0 20px 38px -16px rgba(30,58,138,.9); }
+
+.btn--ghost{ background:var(--surface); border-color:var(--line); color:var(--ink); box-shadow:var(--shadow-1); }
+.btn--ghost:hover{ border-color:var(--brand-text); color:var(--brand-text); }
+
+.btn--outline{ background:transparent; border-color:var(--line); color:var(--ink); }
+.btn--outline:hover{ border-color:var(--brand-text); color:var(--brand-text); }
+
+.btn--block{ width:100%; }
+.btn--wa{ background:#25D366; color:#06351A; }
+.btn--wa:hover{ background:#3CE67C; }
+
+/* Dalga (ripple) efekti — JS ile eklenir */
+.ripple{
+  position:absolute; border-radius:50%; transform:scale(0); pointer-events:none;
+  background:rgba(255,255,255,.45); z-index:-1;
+  animation:ripple .62s ease-out forwards;
+}
+.btn--accent .ripple,.btn--wa .ripple{ background:rgba(30,20,0,.20); }
+.btn--ghost .ripple,.btn--outline .ripple{ background:color-mix(in srgb, var(--brand-text) 22%, transparent); }
+@keyframes ripple{ to{ transform:scale(2.8); opacity:0; } }
+
+/* ---------- 4) HEADER ------------------------------------ */
+.site-header{
+  position:fixed; inset:0 0 auto 0; z-index:90;
+  border-bottom:1px solid transparent;
+  transition:background-color .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+}
+.site-header.is-stuck{
+  background:color-mix(in srgb, var(--surface) 90%, transparent);
+  backdrop-filter:saturate(180%) blur(14px);
+  border-bottom-color:var(--line);
+  box-shadow:0 10px 30px -22px rgba(12,21,38,.5);
+}
+.header-inner{ display:flex; align-items:center; gap:20px; min-height:var(--header-h); }
+
+.brand{ display:flex; align-items:center; gap:14px; margin-right:auto; }
+.brand__mark{
+  width:var(--logo); height:var(--logo); flex:none;
+  border-radius:50%; object-fit:cover; background:#fff;
+  box-shadow:0 3px 14px rgba(12,21,38,.14);
+}
+.brand__name{
+  font-family:var(--font-display); font-weight:800; font-size:1.16rem;
+  line-height:1.05; color:var(--ink);
+}
+.brand__name span{
+  display:block; font-family:var(--font-mono); font-weight:400;
+  font-size:.63rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--brand-text); margin-top:4px;
+}
+
+.nav{ display:flex; align-items:center; gap:4px; }
+.nav a{
+  position:relative; padding:9px 14px; border-radius:999px;
+  font-size:.93rem; font-weight:500; color:var(--ink-soft);
+  transition:color .25s var(--ease);
+}
+.nav a::after{
+  content:""; position:absolute; left:14px; right:14px; bottom:4px; height:2px;
+  background:var(--accent); transform:scaleX(0); transform-origin:left;
+  transition:transform .3s var(--ease);
+}
+.nav a:hover::after,.nav a.is-active::after{ transform:scaleX(1); }
+.nav a:hover,.nav a.is-active{ color:var(--brand-text); }
+
+.header-cta .btn{ padding:12px 22px; font-size:.92rem; }
+
+.nav-toggle{
+  display:none; width:46px; height:46px; border-radius:12px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface-2);
+  align-items:center; justify-content:center; flex-direction:column; gap:5px;
+}
+.nav-toggle span{
+  display:block; width:19px; height:2px; background:var(--ink); border-radius:2px;
+  transition:transform .3s var(--ease), opacity .2s var(--ease);
+}
+.nav-open .nav-toggle span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.nav-open .nav-toggle span:nth-child(2){ opacity:0; }
+.nav-open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+/* Okuma ilerleme çizgisi */
+.progress{
+  position:fixed; left:0; top:0; height:3px; width:0; z-index:95;
+  background:linear-gradient(90deg,var(--accent),var(--accent-hi));
+  transition:width .1s linear;
+}
+
+/* ---------- 5) HERO -------------------------------------- */
+.hero{
+  position:relative; isolation:isolate; overflow:hidden;
+  padding:clamp(128px,15vh,186px) 0 clamp(70px,9vw,110px);
+  background-color:var(--ground);
+  background-image:
+    radial-gradient(880px 520px at 84% 10%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 62%),
+    radial-gradient(760px 520px at 4% 92%, color-mix(in srgb, var(--brand) 14%, transparent), transparent 60%),
+    linear-gradient(168deg, var(--surface) 0%, var(--ground) 52%, var(--surface-2) 100%);
+  color:var(--ink);
+}
+/* Teknik çizim ızgarası */
+.hero__grid-bg{
+  position:absolute; inset:0; z-index:-1; opacity:.55;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand) 12%, transparent) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(120% 92% at 50% 40%, #000 35%, transparent 100%);
+  mask-image:radial-gradient(120% 92% at 50% 40%, #000 35%, transparent 100%);
+}
+/* Karartma overlay */
+.hero__overlay{
+  position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--surface) 55%, transparent), transparent 42%, color-mix(in srgb, var(--surface-2) 70%, transparent));
+}
+
+.hero__inner{ display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(34px,5vw,72px); align-items:center; }
+.hero .eyebrow{ color:var(--brand-text); }
+.hero h1{ color:var(--ink); max-width:15ch; }
+.hero h1 em{ font-style:normal; color:var(--accent-text); }
+.hero__text{ color:var(--ink-soft); max-width:52ch; margin-top:22px; font-size:clamp(1rem,1.1vw,1.14rem); }
+.hero__actions{ display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; }
+
+.hero__stats{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(14px,2.5vw,30px);
+  margin-top:clamp(40px,5vw,62px); padding-top:26px; border-top:1px solid var(--line);
+}
+.stat__num{
+  font-family:var(--font-display); font-weight:800; font-size:clamp(1.5rem,2.4vw,2.05rem);
+  color:var(--ink); line-height:1; font-variant-numeric:tabular-nums;
+}
+.stat__label{
+  font-family:var(--font-mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-faint); margin-top:8px;
+}
+
+/* Hero teknik çizimi */
+.hero__art{ position:relative; }
+.hero__art svg{ width:100%; height:auto; filter:drop-shadow(0 30px 50px rgba(12,21,38,.18)); }
+.dim-line{ stroke-dasharray:300; stroke-dashoffset:300; animation:draw 1.6s var(--ease) .45s forwards; }
+@keyframes draw{ to{ stroke-dashoffset:0; } }
+.glass-shine{ animation:shine 6s ease-in-out infinite; }
+@keyframes shine{ 0%,100%{ opacity:.14; } 50%{ opacity:.42; } }
+
+.hero__badge{
+  position:absolute; right:-8px; bottom:6%;
+  display:flex; align-items:center; gap:12px;
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--line); border-radius:14px;
+  padding:13px 18px; box-shadow:var(--shadow-2);
+  animation:float 5.5s ease-in-out infinite;
+}
+.hero__badge strong{ display:block; font-family:var(--font-display); font-size:.95rem;
+  text-transform:none; letter-spacing:normal; }
+.hero__badge span{
+  font-family:var(--font-mono); font-size:.66rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-faint);
+}
+.pulse-dot{ width:10px; height:10px; border-radius:50%; background:var(--ok); position:relative; flex:none; }
+.pulse-dot::after{
+  content:""; position:absolute; inset:-6px; border-radius:50%;
+  border:2px solid var(--ok); animation:pulse 2s ease-out infinite;
+}
+@keyframes pulse{ 0%{ transform:scale(.6); opacity:.7; } 100%{ transform:scale(1.4); opacity:0; } }
+@keyframes float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-12px); } }
+
+/* Hizmet şeridi */
+.strip{
+  background:var(--surface-2); color:var(--ink-soft);
+  border-block:1px solid var(--line);
+  padding:14px 0; overflow:hidden;
+}
+.strip__track{ display:flex; gap:44px; width:max-content; animation:slide 34s linear infinite; }
+.strip__track span{
+  font-family:var(--font-mono); font-size:.74rem; letter-spacing:.16em; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:44px; white-space:nowrap;
+}
+.strip__track span::after{ content:"\25C6"; color:var(--accent); font-size:.6rem; }
+@keyframes slide{ to{ transform:translateX(-50%); } }
+
+/* ---------- 6) NEDEN BİZ --------------------------------- */
+.about{ display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(34px,5vw,70px); align-items:start; }
+.about__body p + p{ margin-top:16px; }
+
+.pillars{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.pillar{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:26px 22px; box-shadow:var(--shadow-1);
+  transition:transform .3s ease-in-out, box-shadow .3s ease-in-out, border-color .3s ease-in-out;
+}
+.pillar:hover{
+  transform:translateY(-10px);
+  box-shadow:var(--shadow-2);
+  border-color:color-mix(in srgb, var(--brand-text) 40%, var(--line));
+}
+.pillar__icon{
+  width:52px; height:52px; border-radius:14px; display:grid; place-items:center;
+  background:var(--brand-tint); color:var(--brand-text); margin-bottom:16px;
+  transition:transform .35s ease-in-out, background-color .35s ease-in-out, color .35s ease-in-out;
+}
+.pillar:hover .pillar__icon{ transform:scale(1.14) rotate(-5deg); background:var(--accent); color:var(--accent-ink); }
+.pillar__icon svg{ width:26px; height:26px; }
+.pillar h3{ margin-bottom:8px; }
+.pillar p{ color:var(--ink-soft); font-size:.95rem; }
+
+.check-list{ list-style:none; margin:26px 0 0; padding:0; display:grid; gap:12px; }
+.check-list li{ display:flex; gap:12px; align-items:flex-start; color:var(--ink-soft); font-size:.97rem; }
+.check-list svg{ width:20px; height:20px; flex:none; color:var(--ok); margin-top:3px; }
+
+/* ---------- 7) HİZMETLER --------------------------------- */
+.services{ display:grid; grid-template-columns:repeat(auto-fit,minmax(288px,1fr)); gap:22px; }
+.service{
+  position:relative; overflow:hidden;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:30px 26px 28px; box-shadow:var(--shadow-1);
+  transition:all .3s ease-in-out;
+}
+.service::after{
+  content:""; position:absolute; left:0; right:0; top:0; height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-hi));
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.service:hover{
+  transform:translateY(-10px);
+  box-shadow:var(--shadow-2);
+  border-color:color-mix(in srgb, var(--brand-text) 30%, var(--line));
+}
+.service:hover::after{ transform:scaleX(1); }
+.service__icon{
+  width:58px; height:58px; border-radius:16px; display:grid; place-items:center;
+  background:var(--brand-tint); color:var(--brand-text); margin-bottom:20px;
+  transition:transform .3s ease-in-out, background-color .3s ease-in-out, color .3s ease-in-out;
+}
+.service__icon svg{ width:28px; height:28px; }
+.service:hover .service__icon{ transform:scale(1.15) translateY(-2px); background:var(--accent); color:var(--accent-ink); }
+.service h3{ margin-bottom:10px; }
+.service p{ color:var(--ink-soft); font-size:.95rem; }
+.service__meta{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  margin-top:22px; padding-top:16px; border-top:1px dashed var(--line);
+  font-family:var(--font-mono); font-size:.7rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-faint);
+}
+.service__meta b{ color:var(--brand-text); font-weight:600; }
+
+/* ---------- 10) İLETİŞİM --------------------------------- */
+/* İki kolon eşit yükseklikte; buton blokları alta yaslanınca
+   "Teklif İste" ile "WhatsApp’tan Yaz" aynı hizaya oturur. */
+.contact{ display:grid; grid-template-columns:1fr .95fr; gap:clamp(30px,4vw,58px); align-items:stretch; }
+.form{
+  display:flex; flex-direction:column;
+  background:var(--surface); border:1px solid var(--line); border-radius:18px;
+  padding:clamp(24px,3vw,36px); box-shadow:var(--shadow-1);
+}
+.form > .btn{ margin-top:auto; }
+.field{ display:grid; gap:8px; margin-bottom:16px; }
+.field label{
+  font-family:var(--font-mono); font-size:.7rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-faint);
+}
+.field input,.field textarea{
+  width:100%; padding:14px 16px; border-radius:12px;
+  border:1.5px solid var(--line); background:var(--ground);
+  transition:border-color .25s var(--ease), box-shadow .25s var(--ease), background-color .25s var(--ease);
+}
+.field textarea{ resize:vertical; min-height:130px; }
+.field input:focus,.field textarea:focus{
+  outline:none; border-color:var(--brand-text); background:var(--surface);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--brand-text) 16%, transparent);
+}
+.field .err{ color:var(--danger); font-size:.8rem; min-height:1.1em; font-family:var(--font-mono); }
+.field.is-invalid input,.field.is-invalid textarea{ border-color:var(--danger); }
+.form__note{ font-size:.84rem; color:var(--ink-faint); margin-top:14px; text-align:center; }
+.info-card .form__note{ color:var(--ink-faint); }
+.form__ok{
+  display:none; gap:12px; align-items:center; margin-top:16px; padding:14px 16px;
+  border-radius:12px; font-size:.93rem; color:var(--ok);
+  background:color-mix(in srgb, var(--ok) 13%, transparent);
+  border:1px solid color-mix(in srgb, var(--ok) 34%, transparent);
+}
+.form__ok.is-visible{ display:flex; animation:popIn .35s var(--ease); }
+@keyframes popIn{ from{ transform:translateY(14px) scale(.97); opacity:0; } to{ transform:none; opacity:1; } }
+.form__ok svg{ width:20px; height:20px; flex:none; }
+
+.info-card{
+  display:flex; flex-direction:column;
+  position:relative; overflow:hidden;
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--line); border-radius:18px;
+  padding:clamp(26px,3vw,36px); box-shadow:var(--shadow-1);
+}
+.info-card::before{
+  content:""; position:absolute; right:-70px; top:-70px; width:230px; height:230px; border-radius:50%;
+  background:radial-gradient(circle, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%);
+}
+.info-card h3{ color:var(--ink); margin-bottom:6px; }
+.info-card > p{ color:var(--ink-soft); font-size:.95rem; }
+.info-list{ list-style:none; padding:0; margin:26px 0 28px; display:grid; gap:18px; position:relative; }
+.info-list li{ display:flex; gap:14px; align-items:flex-start; }
+.info-list .ico{
+  width:42px; height:42px; border-radius:12px; flex:none; display:grid; place-items:center;
+  background:var(--brand-tint); color:var(--brand-text); border:1px solid var(--line);
+  transition:background-color .3s ease-in-out, color .3s ease-in-out, transform .3s ease-in-out;
+}
+.info-list li:hover .ico{ background:var(--accent); color:var(--accent-ink); transform:scale(1.1); }
+.info-list .ico svg{ width:20px; height:20px; }
+.info-list b{ display:block; font-family:var(--font-display); font-size:1rem; color:var(--ink); }
+.info-list span{ color:var(--ink-soft); font-size:.9rem; }
+.info-list a:hover{ color:var(--brand-text); }
+.info-card .btn{ margin-top:auto; }
+
+/* ---------- 11) FOOTER ----------------------------------- */
+.site-footer{
+  background:var(--surface-2); color:var(--ink-soft);
+  border-top:1px solid var(--line);
+  padding:clamp(50px,6vw,74px) 0 0;
+}
+.footer-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.2fr; gap:clamp(26px,4vw,52px); }
+.site-footer h4{ color:var(--ink); font-size:.98rem; margin-bottom:16px; }
+.site-footer p{ font-size:.93rem; }
+.footer-brand{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.footer-brand .brand__mark{ width:56px; height:56px; }
+.footer-brand .brand__name{ color:var(--ink); }
+.footer-links{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+.footer-links a{ font-size:.93rem; transition:color .25s var(--ease), padding-left .25s var(--ease); }
+.footer-links a:hover{ color:var(--brand-text); padding-left:8px; }
+.footer-bottom{
+  margin-top:clamp(38px,5vw,56px); border-top:1px solid var(--line);
+  padding:22px 0 26px; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; color:var(--ink-faint);
+}
+.socials{ display:flex; gap:10px; }
+.socials a{
+  width:38px; height:38px; border-radius:10px; display:grid; place-items:center;
+  border:1px solid var(--line); background:var(--surface);
+  transition:background-color .3s var(--ease), color .3s var(--ease),
+             border-color .3s var(--ease), transform .3s var(--ease);
+}
+.socials a:hover{ background:var(--accent); color:var(--accent-ink); border-color:var(--accent); transform:translateY(-3px); }
+.socials svg{ width:18px; height:18px; }
+
+/* ---------- 12) YÜZEN BUTONLAR --------------------------- */
+.floaters{ position:fixed; right:20px; bottom:22px; z-index:80; display:grid; gap:12px; justify-items:center; }
+.fab{
+  position:relative; width:56px; height:56px; border-radius:50%; display:grid; place-items:center;
+  border:none; cursor:pointer; box-shadow:0 14px 30px -10px rgba(0,0,0,.45);
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease),
+             background-color .3s var(--ease), opacity .3s var(--ease);
+}
+.fab:hover{ transform:translateY(-4px) scale(1.06); }
+.fab svg{ width:26px; height:26px; }
+.fab--wa{ background:#25D366; color:#06351A; }
+.fab--wa::after{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  border:2px solid #25D366; animation:pulse 2.4s ease-out infinite;
+}
+.fab--top{
+  width:46px; height:46px; background:var(--surface); color:var(--ink);
+  border:1px solid var(--line); opacity:0; pointer-events:none;
+}
+.fab--top.is-visible{ opacity:1; pointer-events:auto; }
+.fab--top svg{ width:20px; height:20px; }
+
+/* ---------- 13) ANİMASYONLAR ----------------------------- */
+/* Scroll ile aşağıdan yukarı yumuşak beliriş (JS: IntersectionObserver) */
+.reveal{
+  opacity:0; transform:translateY(34px);
+  transition:opacity .8s var(--ease), transform .8s var(--ease);
+  transition-delay:var(--d,0ms);
+}
+.reveal.is-in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+  .reveal{ opacity:1; transform:none; }
+}
+
+/* ---------- 14) RESPONSIVE ------------------------------- */
+@media (max-width:1020px){
+  .hero__inner{ grid-template-columns:1fr; }
+  .hero__art{ max-width:540px; margin-inline:auto; }
+  .about{ grid-template-columns:1fr; }
+  .contact{ grid-template-columns:1fr; }
+  .footer-grid{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:860px){
+  :root{ --header-h:76px; --logo:52px; }
+
+  .nav{
+    position:fixed; inset:var(--header-h) 0 auto 0;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--surface); border-bottom:1px solid var(--line);
+    padding:14px var(--gutter) 24px; box-shadow:var(--shadow-2);
+    transform:translateY(-12px); opacity:0; pointer-events:none;
+    transition:opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .nav-open .nav{ opacity:1; transform:none; pointer-events:auto; }
+  .nav a{ padding:14px 4px; border-radius:0; border-bottom:1px solid var(--line-soft); }
+  .nav a::after{ left:4px; right:auto; width:26px; bottom:8px; }
+  .nav-toggle{ display:flex; }
+  .header-cta{ display:none; }
+
+  .pillars{ grid-template-columns:1fr; }
+  .footer-grid{ grid-template-columns:1fr; }
+  .hero__badge{ right:auto; left:0; bottom:-16px; }
+}
+@media (max-width:520px){
+  .btn{ width:100%; }
+  .brand{ gap:10px; }
+  .brand__name{ font-size:1rem; }
+  .hero__stats{ gap:18px; }
+  .floaters{ right:14px; bottom:14px; }
+}
+
+</style>
+
+
+<a class="skip-link" href="#hizmetler">İçeriğe geç</a>
+<div class="progress" id="progress"></div>
+
+<!-- ===== SVG İKON SETİ (görünmez tanım) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4.5 5.5v6c0 4.7 3.1 8.4 7.5 10 4.4-1.6 7.5-5.3 7.5-10v-6L12 2.5Z"/><path d="m8.8 11.8 2.3 2.3 4.3-4.6"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.4V4.5a1 1 0 0 1 1-1h7.9a1 1 0 0 1 .7.3l7.1 7.1a1 1 0 0 1 0 1.4l-7.9 7.9a1 1 0 0 1-1.4 0L3.8 13.1a1 1 0 0 1-.3-.7Z"/><circle cx="8.4" cy="8.4" r="1.5"/></symbol>
+    <symbol id="i-window" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M12 3.5v17M3.5 12h17"/></symbol>
+    <symbol id="i-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="1.5"/><path d="m7 17 6.5-9M12 17l4.5-6"/></symbol>
+    <symbol id="i-hinge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.5h3a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H9"/><path d="M9 3.5v17"/><circle cx="18" cy="8" r="1.4"/><circle cx="18" cy="16" r="1.4"/></symbol>
+    <symbol id="i-mesh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M9 3.5v17M15 3.5v17M3.5 9h17M3.5 15h17"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.5h3l1.5 4-2 1.4a12 12 0 0 0 5.6 5.6l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3.5 5.7a2 2 0 0 1 2-2.2Z"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.9.53 3.68 1.45 5.2L2 22l5.1-1.6a9.8 9.8 0 0 0 4.94 1.32h.01c5.43 0 9.84-4.4 9.84-9.84C21.89 6.4 17.48 2 12.04 2Zm5.76 14.06c-.24.68-1.4 1.3-1.94 1.35-.5.05-1.13.07-1.82-.11-.42-.11-.96-.29-1.65-.58-2.9-1.25-4.8-4.17-4.94-4.37-.15-.2-1.19-1.58-1.19-3.02s.76-2.14 1.03-2.44c.27-.3.58-.37.78-.37h.56c.18 0 .42-.07.66.5.24.58.83 2 .9 2.15.07.15.12.32.02.51-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.3.15.47.12.64-.07.17-.2.74-.86.94-1.16.2-.3.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.48.22.55.34.07.12.07.69-.17 1.36Z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" stroke-width="1.6"/><path d="m8 12.4 2.6 2.6L16 9.6"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8" width="19" height="8" rx="1.5"/><path d="M6.5 8v3M10 8v4M13.5 8v3M17 8v4"/></symbol>
+    <symbol id="i-slide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="1.5"/><path d="M12 4.5v15"/><path d="M6 9.5 8.5 12 6 14.5M18 9.5 15.5 12 18 14.5"/></symbol>
+    <symbol id="i-shower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M12 3.5v17"/><path d="M7.5 8.5v.01M9.5 12v.01M7.5 15.5v.01"/></symbol>
+  </defs>
+</svg>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header" id="header">
+  <div class="container header-inner">
+    <a class="brand" href="#hero" aria-label="Prestij PVC ana sayfa">
+      <img class="brand__mark" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/7QCEUGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAGgcAigAYkZCTUQwYTAwMGFkYTAxMDAwMGE4MDMwMDAwMmYwNjAwMDBiZTA2MDAwMDVlMDcwMDAwNTAwYjAwMDAyZjEwMDAwMDg4MTAwMDAwMWExMTAwMDA4YzExMDAwMGE4MTYwMDAwAP/bAIQABQYGCwgLCwsLCw0LCwsNDg4NDQ4ODw0ODg4NDxAQEBEREBAQEA8TEhMPEBETFBQTERMWFhYTFhUVFhkWGRYWEgEFBQUKBwoICQkICwgKCAsKCgkJCgoMCQoJCgkMDQsKCwsKCw0MCwsICwsMDAwNDQwMDQoLCg0MDQ0MExQTExOc/8IAEQgAlgCWAwEiAAIRAQMRAf/EAKUAAAICAwEBAAAAAAAAAAAAAAAHAQQDBQYCCBAAAQQBAgYBBAMAAAAAAAAAAwABAgQFERIQExQVIDMwBiEkNDEyNREAAQICBQcJBgcAAwAAAAAAAQACAxESITFBUSAiYXGxwdEQEzAycoGRoeEEIzNiovBCUnOCksLxQ2PiEgEAAQIEBgEFAQEAAAAAAAABEQAhMUFRYSBxgZGh8LEQMMHR4fFA/9oADAMBAAIBAwEAAAFMAABZCvst81iFH2TnsAqM7QAVOgesB8w6f6k5/Fl+ZhkrmY8AZPA50w5wTAZwyMSHyRXugSHAUyGWLf0DDlL+Adpot6Tplk5tZgzfJmFtqX34hzphz5PCZ6nRPcjurwEgAfPlmu4phX6x/pgNlufW1gWryTzhCQCedQn04ra1hDOdNOWzXXH1KjXyQAEgAfO7kSrrmOgRTwRcHeU7d8OLcqVdQSASc50dTx7+YGLzHT+PVhuqtqZsIASAB819xqdbMdrxXn2HeWFNaDePHiu2gACSJASee5TpW8/ZK3vLtOntOasBb2nBbkOgoZOfDq9VZgM3d8D3IafY8JexZe39cbnx5Ojt89t8mNM7Djey8e1k/PnJwWK7E0tjyFOj1uqJ0NPq/JGHLb9k0dJvfBG1t67Diy7uvqfYYfVlc1865aKYc9yqmN7ovcx9Wbr5p+iCNh4yBOMyAeD2BjMgHiMgGPzm5zx61iA23JYso50w57GBMABk6rkZI+o+o+RWQDyOU6gn2QBJFYLXnkV7hy96lNNrIkAz4RzphzgmBzgJgc4CY9OUBS3mYEc1a3YHG861AFFVc4SmBzgJgc4CYc4B/9oACAEBAAEFAvGNd0Ku0kLFndNhJuuyOnxBYo1AjKVSLo9UgfhgN5KtWkR62FhFQHGHkWrAiLVlFWsW0k7aeQx7lQx0rKCGIm8XfRa68T1mmrtHnKcHg/GEdyxtDqZRi0W4GzDCl32K75Fd8isjkmPAWRcEq12BuJwcxsjT5rcatZyyAGIY8bsdxhYohI9lKq1WEyZWgEAq9MdgOOHy7PG2JZOtskhMsHV2Q8LfvoelVPfnfRi/SD93wvVdWVcW94Q2N4W/fj/QqMtbGd9GB/iu/wCb4XofbID2Fwwtx/G378d6HdUf2M96MSzMGt+94FjujlY/b6ej5W/dWy7CH3uKov8AkZ2TOHHHgOvTluueN4W5vp7+vjZxppE7WddrOmxh1aplEwAEM9LFsB/Gz/P0/L73r0qz990VjKONNndFaynJlWykjTfOavDKSlDvrqd/mihBoNTvdQuqGmLF3kRop7EGUZNJsgba2GNtsZK8UJDNesMWwatI57FmVwpRmpc7e1Y1dYu2WZCf6GdfSEzwgsM/2cgnZxyFGc+a9auOcCuw4ZOSAR4ovTzfuNdSJUctt6dlWRUzuAFIMuioqpKnWTkqua0SrZY4KRph5A4CmMcZlHJhOIcemCrkmhC2TeQb6Ph5wKpwrRfbWXSA1hGtJQjWmmasoBrSjMFeDtGs6i1WScYGkzAdN07r8dCgAiyNriAzxenZjZhpw2strLayZtFotrLay0W1k0WZbGWQsMytH5suDPoqV168q9iJ4/Hbt8pXbW7xjLRU7kgypZIdn4rWRaKtXd3wRKquaINAyoCpn18JliNSyo1byuqNYkT4mfRc1DsvFQv2F3C0i3zKRtU5X8//2gAIAQMBAT8ByobQbXSN2Cewtt6JkT8Lq27NSiMoHYcR0TM9pbeK27x0UN1Eg4KM2i5w+6+ijNmQdA2ZcNk7vMDauaFs82uvTd41J7ROiJznKte0HOOiQ8Mubfm8VNvzeKhmedMyh11m+5Ezrx6BjC4yCiOAFBtgtOJ4dA2FOsmiMcdQTokhRZULzefTpf/aAAgBAgEBPwHKiOc2Um0hfj3JkQPs/wA6KJC/E2p3k7QVDiUxhiMD0UT3bg+51T9x6KI2k0jEKA6k1p+6uigukCPmdty4j6MpH6S7YudNhGcZSGi/wr8kxxIpGUpTq4r2YZgOMz4nLk75fAqTvl8CojZZsmziVVCVV6AlIYdA94aJlQmkmm602D8o49A6LcBSOGGspsKZpPrNwub69L//2gAIAQEBBj8Cya83b4LNYXnx2KwM8tiriDwJXxPp9VmvHmFnwqWkV7K1mktOBrHHas5vfd49DvUoTZn833YpxDTOFyk0ADKzm143o/jb93WFUoP8OHAqRytCn1YQ89XFUWCQypmoZExU7brX5Yo89e4ogiRGTM1Qm+ejipCoDlc2h1TKdL0XU+v0XU+sLqfUFQDZVg9adioz7jYVg7A8vzCwqYHvGXYjDhkNhttNuj/EGNsGQ+f53IODIcjZN3oupD/l/wCVDDmit2cEHMZRNICdazxe6u8VqhOYa6rwORTFot1eipjqv8nX8eSeC502vs7Prku7b1D1b+RnbdvQ/UbvX7nbU7tf1OS+HjW3dw5GMH4ygBYBkv7b1D7PI39RyH6jd6i9rij2v6nJDsN6PzZ3j6rsN9Mp/beoXZ5IfbdvQ/UbvWtztqPa/qclwxCY7WN/FRXahlP7b9qaygTRErV8M+Khdo702v8A5G70C9wbnO2qlc51X8TlUcH8VF1jZlPPNzBcSLL18LYvhL4WxBz2UROSkxs9OHeqbjSf5DKd2jvUVuooShF4N4PoVnQHAa/RNowi9jhNrgfRZ8FzRj9gKQhF4LQaQ09yDeZLcSTYPBGhBc4Y/YKe/mCAyV9pJ1KXMGev0QJ9nJpPo0e6c7FJokFEzaPNmVs8eC6wUga1WbV1gpixTxfxQ/7BLeocOEAaYvF89a5t0NoB7t5UP2aCA6TBaLTXO9D2eJRYSRdJMgQotBohttkBVPgpRY7HtIIohwKLIftLA2dlIBPhRHB9ETpCW0KH+nucoel+5Zz2jWQF7Q60UuK+B4BQ4l7bRoNn3pT3jqw2mWtA0Q46a0ZVSFSY3vTXC1h9VBjvfRMpsrkvjM/khG55tNol1qr+KFKK2bbw6RVJ0cTkB1xcg9sYTFmcF8f6wjQisrtJdWhG55tMCXWq+60A+M3NM6nIvdHrPzhUGOaG68UGh4q0oguEjpVEPHjaqotHRMJjAZz2JxusHctBXMxWhxbMsn5hPBhN92JnN2L4Q6odOiJSKo822cp2JvuRnzlmi7/UJQhWZWAXA36033QznURULQi/mmgDRgmjmm505VYJvum505VC6XFCUEZxA6srRNUebExR+oyQ93bSwqo2zrTPd9eUqsTJD3drC/uHep82JSn5kbk5w7LeUOb1mIPFt4wPLqVis5bFZy2KwKgP3LQLMim2z8TfvyQcwzGzpJDr7EWg9o45VKH3txVWa/8AKd2PRSZ/K4Ihp1ux6Cu3ELP963G/71rr0Tg6r0yc5wbrKzM/Yqz+1qwGHR11rNc9uo/4qox718XyHBZ0V/crzrKwGjL/AP/aAAgBAQIBPyHhRjhvf03ilI628IB1WsDPzPArV6m+i7W3oxI7f6lYOjQPKNffAGx7UVvBkbvkLdMfs4DYMVge6VOZnK0dcOm9RuyVv3evagIKyCOKDQhgLDrQFk2JBMb0JCw5rB53B/g5U7QRLI2R4sQ2OLrsb/FRi3h3H5egeEtPzq8RlQDFWA60ASMjn9e6Nls/bGjnbWvYaj+lsEDIhHETglRgF10KshgXdofl05GAAQBYA+rFnLYExTadlNp6bUJk9tqN4jGHIgN6gKBjqWmjVhHWxujn9SsW/wAB2akIlpzF5IXWZbTgxKmXsx7PNAZAx/ebwEASV4qZyBiYuT0r/R0hOkMhiSJs4lEDs4qzM4rpR4lYg22DSXiClwM5+waueLlVjYkwwyHJwdTL6X3Jf1y/fSpUfjD9r9uF03u7vo/cz+gpSKHjeASa2JdXHznkaSLU+NB8seCWiFQIORwui9LdrCm2cHn6UYOcvmknD6QuLh5f1FW3YgPl8qveTPWx/PE/WzrxHy1eCoG9U9JpScADMc27Glwm39P5U+/XrApI+ld4nXH0y4BfxX+K/VXxsT9xUZAdBHKgKDNfExagBjVNpjIx4pP0EeNQdSOTgVPt/avTH7oHt+alQIlbHpXuAtWHSjkBw3COru8T97OkWe+KRqCV8hCZJoUJGo3+ieaVQrYXHUnCVIJG3lMdGTvTCZiiCdeoY5lUgiVw0MAbBKJ6EHeo9IslJBBtLtXuhTntfVw5Z1m2Jy3j80MAGRQZLIcTVgRQf+36qJVhMbOdRdqUG7T8JNAElXGpH3X1sVepIeRpKFZJFsaKkaclgwM4/AU3jh3G4WDSaI1wv0Ly9AxbVBQgTsFyo3aBXloJXQAbE00Vnc6cLiMNr1ZOIkFkIsCX8V5ShRCgMmt2NWJEJhSOS0bClmbl/wAJ3pNDuWfhQ+KgaiRvWL80b8GCx6Y9qSKmLc5bUjgDwLRkV0SV8Hw1kIad4eZKZ/ASRMX6wtf4KkfYC3IMOqkGfAH3KDqGbiGZ31q7Zd2Mifml1UK4rQSJkYBUYHKljYe2yEw6qjkYcJeIoRy8vgDYKvaA4SXVObSwQcUTSdYI2YNToS8qJlrTKrDREdyoyyDMyow7tQxgehZ/axTQf30b0A2kjNnC63qXQCyziDUsxzxxJvoOEBgGPmunc0zHKrDCQkGEVxwswnStr+MRkTIwjYlchKXq3WgNcJedSsEjJ8CaeGZIxZMc3Ipw3mIIYmPRyvpWUwsm7VuAecKZcoIIExfJSbUWi2DC4ZzGGFNhjKx8S5GDCkyThAYEvNtQkAhmmW631CWE2dDA7F+f1baGE3D2Hah5Mmdbk8EdKjofRSLGi2HKthZktmUBgC84GNDgAztakKMEmDpQGAI260pktsZVGZgm140woDAO2uNWAAcqB2pixnj3oVjNWhjH5auBpfv1+rITErG64Nc9xdHeWod1omT9wxjr0tSpaXmNOWuvzwI5KkxDn3B+fkoEFqY36PsrF2iFxc/gfvCnmjPM5Nt8+WPEMVfGQMLTO/7IaOAA5GD1/TrUTATc9/2oBIial+A6StgqOzWWtbuaaZP2ur7yqyvJ4ddftJcMO1CyHg9ysRH0zpmz0PyNNQJxWyj4SsQi6ze96SRMmVh1168f/9oADAMBAgICAwIAABDzhvvPcTryjzcAcc8AFGhOAACBPcBWDMADifPcAQKsADTxRMBCNNPqtf1X7El8sQMAOLG8izvABABAM6jz0MwwhH3yjDDBHMPDDCD/2gAIAQMCAT8Q4pc3IeTlSsCNHETUc+Kamp+lvFO71/SlgxG4YJg/avnN9zPHieDd8Lyz8Vz0k5XH2gQz49FVTEXIs+VZSYg7DA5SXKdKBAguIhysRa+7VuGx7DjtRzRCJOlWowYxCJ7UakutjRN5qYrFK837AIJXxu7UYuXPN8mX2HAZ8FjyF1oUCTF8+mz7v//aAAgBAgIBPxDinFRipc6mCtEyeKKio+l7D6ApMRbOzD/gAScG/YdcuzXJS/h9pysuMYQE0plmRuCeqA57qnDJYDbO8r22Kujjpn+jrWfi9M6wgPmx5VHDCz7CJIDzsb0o+wEjFceIscxYpJD2Lfd93//aAAgBAQIBPxDgCavxaA8K5XzzwUaxHVa/QY1YC2eQNQYdWkju6aqRczJa9FOoy0/JoiDNj0UNGz7LD6Ut3QXa/pLYuG6t9GZsXjffFQDgAEDoAcTaNxNKMEN/xRlDF7e05O1HZrkXOooglF0JAxEbiacWo7uL3aC7uiebubjjv9KZfyxi5qxTNZXiHiEjA1VAHOiAASBkTUSz9ZGL/FGfg8UVOI2tTzOjRSs46MQHge+9SNcgzaclt8l8ysBeAbAAAfXHNjXvjD4TRTI+mki7A10LIMfhSfCvl1Xk2ZV3YR5X1PrJoTPYvndy9LH89Qm/Sf69sKtiO3m1Cb8auq1S65rwf2oHV8EMQZkDq+jqJ4mziaCxmWpK3z5MLbJQs/cRDepb2lXBWzs4cj0N1AU5pNw9Fn6CRv5Dw9+ynOIuKLcJeia/Rku/QVVAkPrOrA4LAI3GzRROY6XdibQyUQjCOIlZnWcvivWqC8D0EDwcPqmdKtll6mDAHlr2OlE3hiGXwZV0F4X+ZDfiapqPWvlqdnbXGBAJqibSpPerSxmVdKH45UaNLOMuIbtoznE+UVqUdAeRSRscbv8AHaP9tFG6GpPNPz6PZmtMSqEtJbSW7+BQTeESYHi4h8bamzL2ZJTOcPqALBqHMwwdn4UaxTkuy/Y09+ZLBJEGMCnEEaFRPOTuKwmi7zMiaRGkSfYq3Ia5QqKNvQW4MsyWis+kteqF1Sy8ckR0d86zFWNWM9Im9Thm7mYkxi6u9POhvxGvSGPK1WooLEH8AKZeXCKUlcYscX7RWAXqLNHxZlIHBI0atctG66AA6lNzCyXYeglCELAwStzHs/wq4GOlJ4NU1D0pLIMNfhYJ9ITuV02kZWkMqv6fph+gJEJHZ+OKWM5xvt9CAQqRDiZ4v+S0BLtUVgqMrARKA7imWRhuggNeIRihqBzDSGdOdEibE8MWP0V+xFv8nRXBnnrk+AwOtGYIBCyEOcVnuDroqFffceTrVA66vbvN/oDsv518BR417ZOq5XIfjhdxN1XytWK5cKXsASJXNtWC4Rc7DZXtshRIo7s1ExtWQp2RFtBgCie8OGDu85rUbyhLrzeIM6HdN5BFDcY1UxOTbCpw7+GpHpSFgScwS7/ipIT8i3VnqoYrA5c4dhS3cFkXxGnZrVgAGK2k2dChjYVFqWcX8qMkWA7yYzUtgxtfBAZk4ir7GMftJTuiivXVMP0ipgDSXdC/66yRYOeaGCjOTdbGgywCh5iB1EWoe5XKXlqKFUXhI21QtdTerKGABaJm5q5XtWBQwbKMUoItaq/ILmTeg8Y3nosn1le8vUwe9ramAifkCzKAkWnKCLYfS4W1Q+K3SlolYLCwQJayFhrPywAuhXDGQvtQaGqqBJcVjPelAksgLLGHEnaiQCwAAL4La351DSshJSGwS2RhpV9fLoJZTJxs3NKAgYTYAdjPPWgAEiAAEMlgyWedQkBkLWlbq1p0UScPVGiZ/D2fO/EH1VOPT/aOZ7a1DM7KTrMsf5b7jVwtjGL5NCn1gjOxd2LNbDhSbh7iZiZjpX+O5myaPjvVmiXnevgvqfZEqAF1bAUIgDNgZ3WfBSVyONcxM5qxbOMRCMJcSroLTZOoET/oVoJEj3/QpDv9Gxd0oeUsEA9S3A1Kc/mWkyh3Fm5EvQrrKj9LvNL8aH+oufQPtKSgzUPil9/j4Ces0v11x4oKWrbWYn40xIG2Gib3Dn9VXHOL10X7nH//2Q==" alt="Prestij PVC logosu" width="64" height="64">
+      <span class="brand__name">PRESTİJ PVC<span>Kahramanmaraş</span></span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Ana menü">
+      <a href="#hero">Anasayfa</a>
+      <a href="#neden-biz">Neden Biz</a>
+      <a href="#hizmetler">Hizmetler</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+
+    <div class="header-cta">
+      <a class="btn btn--accent" href="tel:+905464761071">
+        <svg aria-hidden="true"><use href="#i-phone"/></svg> Hemen Ara
+      </a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="hero">
+  <div class="hero__grid-bg" aria-hidden="true"></div>
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="eyebrow">Kahramanmaraş · Onikişubat</p>
+      <h1>PVC Sistemlerinizde <em>Profesyonel</em> Dokunuş</h1>
+      <p class="hero__text">
+        PVC kapı, pencere ve sürme sistemleri; cam balkon, sineklik ve duşakabin.
+        Yeni imalattan bakım-onarıma kadar tüm işleri Kahramanmaraş’ta yerinde ölçüp
+        aynı gün içinde teslim ediyoruz.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--accent" href="#hizmetler">
+          Hizmetlerimiz <svg aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="tel:+905464761071">
+          <svg aria-hidden="true"><use href="#i-phone"/></svg> Hemen Ara: 0546 476 10 71
+        </a>
+      </div>
+
+      <!-- ÖRNEK DEĞERLER — kendi rakamlarınızla değiştirin -->
+      <div class="hero__stats">
+        <div class="stat">
+          <div class="stat__num" data-count="5" data-suffix="+">0</div>
+          <div class="stat__label">Yıl Saha Tecrübesi</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num" data-count="90" data-suffix=" dk">0</div>
+          <div class="stat__label">Ort. Keşif Süresi</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num" data-count="2" data-suffix=" Yıl">0</div>
+          <div class="stat__label">İşçilik Garantisi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teknik çizim: PVC kanat + ölçü çizgileri -->
+    <div class="hero__art">
+      <svg viewBox="0 0 460 400" role="img" aria-label="PVC pencere kanadının teknik çizimi">
+        <defs>
+          <linearGradient id="glassGrad" x1="0" y1="0" x2="0.6" y2="1">
+            <stop offset="0%" stop-color="#5E8BE8"/>
+            <stop offset="55%" stop-color="#2C4FA8"/>
+            <stop offset="100%" stop-color="#16295E"/>
+          </linearGradient>
+          <linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#C9D3E8"/>
+          </linearGradient>
+        </defs>
+
+        <!-- kasa -->
+        <rect x="70" y="40" width="320" height="320" rx="6" fill="url(#frameGrad)"/>
+        <rect x="70" y="40" width="320" height="320" rx="6" fill="none" stroke="#0E1B3E" stroke-width="2" opacity=".5"/>
+        <!-- kanat boşlukları -->
+        <rect x="88" y="58" width="136" height="284" rx="4" fill="#0F1E46"/>
+        <rect x="236" y="58" width="136" height="284" rx="4" fill="#0F1E46"/>
+        <!-- camlar -->
+        <rect x="98" y="68" width="116" height="264" rx="2" fill="url(#glassGrad)"/>
+        <rect x="246" y="68" width="116" height="264" rx="2" fill="url(#glassGrad)"/>
+        <!-- cam parlaması -->
+        <g class="glass-shine" opacity=".2">
+          <polygon points="98,300 170,68 214,68 122,332 98,332" fill="#fff"/>
+          <polygon points="246,300 318,68 344,68 262,332 246,332" fill="#fff"/>
+        </g>
+        <!-- orta dikme + ispanyolet kolu -->
+        <rect x="224" y="58" width="12" height="284" fill="#E7ECF7"/>
+        <rect x="212" y="186" width="16" height="46" rx="6" fill="#F59E0B"/>
+        <circle cx="220" cy="196" r="4" fill="#14224C"/>
+        <!-- menteşeler -->
+        <rect x="66" y="96" width="12" height="30" rx="3" fill="#F59E0B"/>
+        <rect x="66" y="274" width="12" height="30" rx="3" fill="#F59E0B"/>
+
+        <!-- ölçü çizgileri (yükleme animasyonu) -->
+        <g stroke="var(--brand-text)" stroke-width="1.6" fill="none" opacity=".9">
+          <path class="dim-line" d="M70 24h320"/>
+          <path d="M70 16v16M390 16v16"/>
+          <path class="dim-line" d="M424 40v320"/>
+          <path d="M416 40h16M416 360h16"/>
+        </g>
+        <text x="230" y="16" text-anchor="middle" fill="var(--brand-text)" font-family="IBM Plex Mono, monospace" font-size="13">1400 mm</text>
+        <text x="440" y="204" text-anchor="middle" fill="var(--brand-text)" font-family="IBM Plex Mono, monospace" font-size="13" transform="rotate(90 440 204)">1400 mm</text>
+        <text x="122" y="382" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace" font-size="12">70 mm 5 ODACIKLI PROFİL</text>
+      </svg>
+
+      <div class="hero__badge">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span>
+          <strong>Bugün servis açık</strong>
+          <span>08:00 – 21:00 · Yerinde keşif</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Kayan hizmet şeridi -->
+<div class="strip" aria-hidden="true">
+  <div class="strip__track" id="strip">
+    <span>PVC Kapı &amp; Pencere</span><span>Sürme Sistemler</span><span>Cam Balkon</span><span>Sineklik</span>
+    <span>Duşakabin</span><span>Fitil Değişimi</span><span>Isıcam</span><span>Bakım &amp; Onarım</span>
+  </div>
+</div>
+
+<!-- ===================== NEDEN BİZ ===================== -->
+<section class="section" id="neden-biz">
+  <div class="container about">
+    <div class="about__body reveal">
+      <p class="eyebrow">Hakkımızda</p>
+      <h2>Kahramanmaraş’ta PVC ve cam sistemlerinin tek adresi</h2>
+      <p class="lead" style="margin-top:18px;">
+        Prestij PVC; kapı, pencere ve sürme sistemlerinden cam balkona, sineklikten
+        duşakabine kadar tüm işleri <strong>kendi ekibiyle</strong> yürütüyor.
+        Ölçü, imalat ve montaj tek elden.
+      </p>
+      <p style="margin-top:16px;color:var(--ink-soft);">
+        Onikişubat merkezli atölyemizden Kahramanmaraş’ın her mahallesine servis veriyoruz.
+        Keşif ve ölçü ücretsiz; fiyat, işe başlamadan önce net olarak konuşulur.
+      </p>
+
+      <ul class="check-list">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Yerinde ücretsiz keşif ve ölçü — teklif aynı gün elinizde.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Isıcam, temperli cam, fitil ve aksesuarda belgeli malzeme.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Montaj sonrası bakım, ayar ve fitil değişimi desteği.</span></li>
+      </ul>
+    </div>
+
+    <div class="pillars">
+      <article class="pillar reveal" style="--d:80ms">
+        <div class="pillar__icon"><svg aria-hidden="true"><use href="#i-bolt"/></svg></div>
+        <h3>Hızlı Servis</h3>
+        <p>Ölçü randevusunu çoğunlukla aynı gün veriyoruz. Kırık cam ve kapanmayan kanat gibi acil işlerde hafta sonu da servis var.</p>
+      </article>
+      <article class="pillar reveal" style="--d:180ms">
+        <div class="pillar__icon"><svg aria-hidden="true"><use href="#i-shield"/></svg></div>
+        <h3>Kaliteli Malzeme</h3>
+        <p>Isıcam, temperli cam, fitil ve aksesuarda belgeli ürün kullanıyoruz. Ucuz muadil dayatması yok.</p>
+      </article>
+      <article class="pillar reveal" style="--d:280ms">
+        <div class="pillar__icon"><svg aria-hidden="true"><use href="#i-tag"/></svg></div>
+        <h3>Uygun Fiyat</h3>
+        <p>Keşif ücretsiz, verilen fiyat sabit. Onayınız olmadan işlem yapılmaz, faturaya sürpriz kalem eklenmez.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HİZMETLER ===================== -->
+<section class="section section--alt" id="hizmetler">
+  <div class="container">
+    <div class="sect-head reveal">
+      <p class="eyebrow">Hizmetlerimiz</p>
+      <h2>Kapıdan cama, kilitten fitile tüm PVC onarımları</h2>
+      <p>Aşağıdaki işlerin tamamı yerinde yapılır; kanadı atölyeye götürmemiz gereken durumlarda aynı gün geri takarız.</p>
+    </div>
+
+    <div class="services">
+      <article class="service reveal" style="--d:0ms">
+        <div class="service__icon"><svg aria-hidden="true"><use href="#i-window"/></svg></div>
+        <h3>PVC Kapı &amp; Pencere</h3>
+        <p>Isı ve ses yalıtımı yüksek profillerle ölçüye özel imalat. Yerinde ölçü alınır, eski doğrama sökülür, yenisi temiz montajla takılır.</p>
+        <div class="service__meta"><span>Keşif: <b>Ücretsiz</b></span><span>Ölçüye özel</span></div>
+      </article>
+
+      <article class="service reveal" style="--d:90ms">
+        <div class="service__icon"><svg aria-hidden="true"><use href="#i-slide"/></svg></div>
+        <h3>Sürme Sistemler</h3>
+        <p>Balkon ve teras geçişleri için sürme kapı ve pencere sistemleri. Geniş açıklıklarda ray, tekerlek ve kilit ayarı dâhil.</p>
+        <div class="service__meta"><span>Geniş açıklık</span><span>Sessiz ray</span></div>
+      </article>
+
+      <article class="service reveal" style="--d:180ms">
+        <div class="service__icon"><svg aria-hidden="true"><use href="#i-glass"/></svg></div>
+        <h3>Cam Balkon</h3>
+        <p>Katlanır cam balkon sistemleriyle balkonunuz dört mevsim kullanılır hâle gelir. Temperli cam, alüminyum profil ve mafsallı taşıyıcı.</p>
+        <div class="service__meta"><span>Temperli cam</span><span>Katlanır sistem</span></div>
+      </article>
+
+      <article class="service reveal" style="--d:0ms">
+        <div class="service__icon"><svg aria-hidden="true"><use href="#i-mesh"/></svg></div>
+        <h3>Sineklik Sistemleri</h3>
+        <p>Menteşeli, plise ve sürme sineklik seçenekleri. Mevcut sinekliklerinizde yalnızca tül değişimi de yapılır.</p>
+        <div class="service__meta"><span>3 farklı tip</span><span>Tül değişimi</span></div>
+      </article>
+
+      <article class="service reveal" style="--d:90ms">
+        <div class="service__icon"><svg aria-hidden="true"><use href="#i-shower"/></svg></div>
+        <h3>Duşakabin</h3>
+        <p>Ölçüye özel temperli cam duşakabin imalatı ve montajı. Köşe, oval ve düz model seçenekleriyle banyonuza uyumlu çözüm.</p>
+        <div class="service__meta"><span>Temperli cam</span><span>Ölçüye özel</span></div>
+      </article>
+
+      <article class="service reveal" style="--d:180ms">
+        <div class="service__icon"><svg aria-hidden="true"><use href="#i-hinge"/></svg></div>
+        <h3>Bakım, Onarım &amp; Fitil</h3>
+        <p>Kapanmayan kanat, rüzgâr alan pencere, sıkışan kol veya kırık cam… Ayar, fitil değişimi ve aksesuar onarımı yerinde yapılır.</p>
+        <div class="service__meta"><span>Ort. süre: <b>45 dk</b></span><span>Yerinde servis</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== İLETİŞİM ===================== -->
+<section class="section" id="iletisim">
+  <div class="container">
+    <div class="sect-head reveal">
+      <p class="eyebrow">İletişim</p>
+      <h2>Ölçü için gelelim, fiyatı yerinde konuşalım</h2>
+      <p>Formu doldurun ya da WhatsApp’tan fotoğraf gönderin — çoğu işte fotoğraf ve kaba ölçüyle ön fiyat verebiliyoruz.</p>
+    </div>
+
+    <div class="contact">
+      <!-- Form -->
+      <form class="form reveal" id="contactForm" novalidate>
+        <div class="field">
+          <label for="ad">Ad Soyad</label>
+          <input type="text" id="ad" name="ad" placeholder="Örn. Mehmet Demir" autocomplete="name" required>
+          <span class="err" data-err-for="ad"></span>
+        </div>
+
+        <div class="field">
+          <label for="telefon">Telefon</label>
+          <input type="tel" id="telefon" name="telefon" placeholder="05xx xxx xx xx" autocomplete="tel" required>
+          <span class="err" data-err-for="telefon"></span>
+        </div>
+
+        <div class="field">
+          <label for="mesaj">Mesajınız</label>
+          <textarea id="mesaj" name="mesaj" placeholder="Hangi iş için? Örn. salon için 2 adet sürme pencere ölçüsü, ya da balkon kapısı kapanmıyor." required></textarea>
+          <span class="err" data-err-for="mesaj"></span>
+        </div>
+
+        <button class="btn btn--brand btn--block" type="submit">
+          Teklif İste <svg aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        </button>
+
+        <p class="form__note">Bilgileriniz yalnızca size dönüş yapmak için kullanılır.</p>
+
+        <p class="form__ok" id="formOk" role="status">
+          <svg aria-hidden="true"><use href="#i-check"/></svg>
+          <span>Talebiniz alındı. En geç 15 dakika içinde sizi arayacağız.</span>
+        </p>
+      </form>
+
+      <!-- Bilgi kartı -->
+      <aside class="info-card reveal" style="--d:120ms">
+        <h3>Prestij PVC</h3>
+        <p>Kapı · Pencere · Sürme Sistemleri — Onikişubat / Kahramanmaraş</p>
+
+        <ul class="info-list">
+          <li>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>
+            <span><b><a href="tel:+905464761071">0546 476 10 71</a></b><span>Telefon &amp; WhatsApp hattı</span></span>
+          </li>
+          <li>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+            <span><b>Onikişubat / Kahramanmaraş</b><span>Yerinde ücretsiz keşif ve ölçü</span></span>
+          </li>
+          <li>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-clock"/></svg></span>
+            <span><b>08:00 – 20:00</b><span>Pazartesi – Cumartesi</span></span>
+          </li>
+          <li>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-ig"/></svg></span>
+            <span><b><a href="https://www.instagram.com/prestijpvc/" target="_blank" rel="noopener">@prestijpvc</a></b><span>Biten işlerin fotoğrafları Instagram’da</span></span>
+          </li>
+          <li>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-ruler"/></svg></span>
+            <span><b>Servis bölgesi</b><span>Kahramanmaraş merkez (Onikişubat, Dulkadiroğlu) ve ilçeler</span></span>
+          </li>
+        </ul>
+
+        <a class="btn btn--wa btn--block" href="https://wa.me/905464761071?text=Merhaba%2C%20PVC%20tamiri%20i%C3%A7in%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp’tan Yaz
+        </a>
+
+        <p class="form__note">Fotoğraf gönderin, ön fiyatı hemen söyleyelim.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img class="brand__mark" src="data:image/jpeg;base64,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" alt="Prestij PVC logosu" width="48" height="48">
+          <span class="brand__name">PRESTİJ PVC<span>Kahramanmaraş</span></span>
+        </div>
+        <p>Kahramanmaraş Onikişubat’ta PVC kapı, pencere ve sürme sistemleri; cam balkon, sineklik, duşakabin ile bakım-onarım hizmetleri.</p>
+      </div>
+
+      <div>
+        <h4>Hizmetler</h4>
+        <ul class="footer-links">
+          <li><a href="#hizmetler">PVC Kapı &amp; Pencere</a></li>
+          <li><a href="#hizmetler">Sürme Sistemler</a></li>
+          <li><a href="#hizmetler">Cam Balkon</a></li>
+          <li><a href="#hizmetler">Sineklik &amp; Duşakabin</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Kurumsal</h4>
+        <ul class="footer-links">
+          <li><a href="#neden-biz">Hakkımızda</a></li>
+          <li><a href="#iletisim">Teklif Al</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>İletişim</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+905464761071">0546 476 10 71</a></li>
+          <li><a href="https://www.instagram.com/prestijpvc/" target="_blank" rel="noopener">@prestijpvc</a></li>
+          <li><span>Onikişubat<br>Kahramanmaraş</span></li>
+        </ul>
+        <div class="socials" style="margin-top:16px;">
+          <a href="https://www.instagram.com/prestijpvc/" aria-label="Instagram" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+          <a href="https://wa.me/905464761071" aria-label="WhatsApp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Prestij PVC · Tüm hakları saklıdır.</span>
+      <span>Kapı · Pencere · Sürme Sistemleri · Cam Balkon</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== YÜZEN BUTONLAR ===================== -->
+<div class="floaters">
+  <button class="fab fab--top" id="toTop" type="button" aria-label="Yukarı çık">
+    <svg aria-hidden="true"><use href="#i-arrow-up"/></svg>
+  </button>
+  <a class="fab fab--wa" href="https://wa.me/905464761071?text=Merhaba%2C%20PVC%20tamiri%20i%C3%A7in%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener" aria-label="WhatsApp ile yazın">
+    <svg aria-hidden="true"><use href="#i-wa"/></svg>
+  </a>
+</div>
+
+
+<script>
+/* =========================================================
+   PRESTİJ PVC — Etkileşimler
+   1) Header / ilerleme / aktif menü   2) Mobil menü
+   3) Scroll beliriş animasyonu        4) Sayaçlar
+   5) Buton dalga (ripple) efekti      6) Sonsuz kayan şerit
+   7) Form doğrulama
+   ========================================================= */
+(function () {
+  "use strict";
+
+  const $  = (sel, ctx) => (ctx || document).querySelector(sel);
+  const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- 1) HEADER, İLERLEME ÇİZGİSİ, AKTİF MENÜ ---- */
+  const header   = $("#header");
+  const progress = $("#progress");
+  const toTop    = $("#toTop");
+  const navLinks = $$(".nav a:not(.btn)");
+
+  function onScroll() {
+    const y = window.scrollY;
+    header.classList.toggle("is-stuck", y > 40);
+    toTop.classList.toggle("is-visible", y > 600);
+
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (max > 0 ? (y / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // Görünen bölüme göre menüde aktif link
+  const sections = navLinks
+    .map(a => document.getElementById(a.getAttribute("href").slice(1)))
+    .filter(Boolean);
+
+  if ("IntersectionObserver" in window) {
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        navLinks.forEach(a =>
+          a.classList.toggle("is-active", a.getAttribute("href") === "#" + en.target.id)
+        );
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    sections.forEach(s => spy.observe(s));
+  }
+
+  toTop.addEventListener("click", () =>
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" })
+  );
+
+  /* ---------- 2) MOBİL MENÜ ------------------------------ */
+  const navToggle = $("#navToggle");
+  const closeNav = () => {
+    document.body.classList.remove("nav-open");
+    navToggle.setAttribute("aria-expanded", "false");
+    navToggle.setAttribute("aria-label", "Menüyü aç");
+  };
+  navToggle.addEventListener("click", () => {
+    const open = document.body.classList.toggle("nav-open");
+    navToggle.setAttribute("aria-expanded", String(open));
+    navToggle.setAttribute("aria-label", open ? "Menüyü kapat" : "Menüyü aç");
+  });
+  navLinks.forEach(a => a.addEventListener("click", closeNav));
+
+  /* ---------- 3) SCROLL BELİRİŞ (fade-in + slide-up) ----- */
+  function watchReveals() {
+    const items = $$(".reveal:not(.is-in)");
+    if (!("IntersectionObserver" in window) || reduceMotion) {
+      items.forEach(el => el.classList.add("is-in"));
+      return;
+    }
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        en.target.classList.add("is-in");
+        obs.unobserve(en.target);
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -60px 0px" });
+    items.forEach(el => io.observe(el));
+  }
+
+  /* ---------- 4) SAYAÇLAR -------------------------------- */
+  function runCounter(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || "";
+    if (reduceMotion) { el.textContent = target.toLocaleString("tr-TR") + suffix; return; }
+
+    const dur = 1500;
+    const t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString("tr-TR") + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+  const counters = $$("[data-count]");
+  if ("IntersectionObserver" in window) {
+    const cio = new IntersectionObserver((entries, obs) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        runCounter(en.target);
+        obs.unobserve(en.target);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => cio.observe(c));
+  } else {
+    counters.forEach(runCounter);
+  }
+
+  /* ---------- 5) BUTON DALGA (RIPPLE) -------------------- */
+  document.addEventListener("pointerdown", e => {
+    const btn = e.target.closest(".btn");
+    if (!btn || reduceMotion) return;
+    const r = btn.getBoundingClientRect();
+    const size = Math.max(r.width, r.height);
+    const wave = document.createElement("span");
+    wave.className = "ripple";
+    wave.style.width = wave.style.height = size + "px";
+    wave.style.left = (e.clientX - r.left - size / 2) + "px";
+    wave.style.top  = (e.clientY - r.top  - size / 2) + "px";
+    btn.appendChild(wave);
+    wave.addEventListener("animationend", () => wave.remove());
+  });
+
+  /* ---------- 6) SONSUZ KAYAN ŞERİT --------------------- */
+  // İçeriği ikiye katlayarak kesintisiz döngü sağlar (%50 kaydırma)
+  ["#strip"].forEach(sel => {
+    const track = $(sel);
+    if (!track) return;
+    Array.from(track.children).forEach(child => {
+      const copy = child.cloneNode(true);
+      copy.setAttribute("aria-hidden", "true");   // ekran okuyucuya tekrar okutma
+      $$("[id]", copy).forEach(el => el.removeAttribute("id"));
+      track.appendChild(copy);
+    });
+  });
+
+  /* ---------- 7) FORM DOĞRULAMA -------------------------- */
+  const form = $("#contactForm");
+  const okBox = $("#formOk");
+
+  const RULES = {
+    ad:      v => v.trim().length >= 3 || "Lütfen ad ve soyadınızı yazın.",
+    telefon: v => /^(\+?90|0)?\s?5\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(v.trim())
+                  || "Telefonu 05xx xxx xx xx biçiminde girin.",
+    mesaj:   v => v.trim().length >= 10 || "Arızayı birkaç kelimeyle anlatın (en az 10 karakter)."
+  };
+
+  function validate(input) {
+    const res = RULES[input.name](input.value);
+    const field = input.closest(".field");
+    const err = $('[data-err-for="' + input.name + '"]', field);
+    const ok = res === true;
+    field.classList.toggle("is-invalid", !ok);
+    err.textContent = ok ? "" : res;
+    input.setAttribute("aria-invalid", String(!ok));
+    return ok;
+  }
+
+  $$("#contactForm input, #contactForm textarea").forEach(el => {
+    el.addEventListener("blur", () => validate(el));
+    el.addEventListener("input", () => {
+      if (el.closest(".field").classList.contains("is-invalid")) validate(el);
+    });
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const fields = $$("#contactForm input, #contactForm textarea");
+    const allOk = fields.map(validate).every(Boolean);
+
+    if (!allOk) {
+      const first = $(".field.is-invalid input, .field.is-invalid textarea");
+      if (first) first.focus();
+      okBox.classList.remove("is-visible");
+      return;
+    }
+
+    /* Gerçek gönderim için burayı kendi uç noktanızla değiştirin:
+       fetch("/api/teklif", { method:"POST", body:new FormData(form) }) */
+    okBox.classList.add("is-visible");
+    form.reset();
+  });
+
+  /* ---------- Yıl + beliriş gözlemcisini başlat ---------- */
+  $("#year").textContent = new Date().getFullYear();
+  watchReveals();
+})();
+
+</script>
