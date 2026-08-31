@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://prestijpvc.site/sitemap.xml
