@@ -398,40 +398,47 @@ p{ margin:0; }
 /* İki kolon eşit yükseklikte; buton blokları alta yaslanınca
    "Teklif İste" ile "WhatsApp’tan Yaz" aynı hizaya oturur. */
 .contact{ display:grid; grid-template-columns:1fr .95fr; gap:clamp(30px,4vw,58px); align-items:stretch; }
-.form{
+.cta-card{
   display:flex; flex-direction:column;
   background:var(--surface); border:1px solid var(--line); border-radius:18px;
   padding:clamp(24px,3vw,36px); box-shadow:var(--shadow-1);
 }
-.form > .btn{ margin-top:auto; }
-.field{ display:grid; gap:8px; margin-bottom:16px; }
-.field label{
-  font-family:var(--font-mono); font-size:.7rem; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--ink-faint);
+.cta-card h3{ color:var(--ink); margin-bottom:8px; }
+.cta-card > p{ color:var(--ink-soft); font-size:.95rem; }
+.cta-card__tel{
+  display:block; margin:26px 0 22px;
+  font-family:var(--font-display); font-weight:800;
+  font-size:clamp(1.9rem,4.4vw,2.6rem); letter-spacing:-.02em;
+  color:var(--ink); text-align:center; white-space:nowrap;
+  transition:color .3s var(--ease);
 }
-.field input,.field textarea{
-  width:100%; padding:14px 16px; border-radius:12px;
-  border:1.5px solid var(--line); background:var(--ground);
-  transition:border-color .25s var(--ease), box-shadow .25s var(--ease), background-color .25s var(--ease);
+.cta-card__tel:hover{ color:var(--brand-text); }
+.cta-card .btn{ margin-top:auto; }
+.note{ font-size:.84rem; color:var(--ink-faint); margin-top:14px; text-align:center; }
+.info-card .note{ color:var(--ink-faint); }
+
+/* --- Sıkça sorulan sorular --- */
+.faq{ max-width:860px; margin:0 auto; display:grid; gap:12px; }
+.faq__item{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  overflow:hidden; transition:border-color .3s var(--ease), box-shadow .3s var(--ease);
 }
-.field textarea{ resize:vertical; min-height:130px; }
-.field input:focus,.field textarea:focus{
-  outline:none; border-color:var(--brand-text); background:var(--surface);
-  box-shadow:0 0 0 4px color-mix(in srgb, var(--brand-text) 16%, transparent);
+.faq__item[open]{ border-color:var(--accent); box-shadow:var(--shadow-1); }
+.faq__item summary{
+  display:flex; align-items:center; justify-content:space-between; gap:18px;
+  padding:20px clamp(18px,2.4vw,26px); cursor:pointer; list-style:none;
+  font-family:var(--font-display); font-weight:600; font-size:1.03rem; color:var(--ink);
+  transition:color .3s var(--ease);
 }
-.field .err{ color:var(--danger); font-size:.8rem; min-height:1.1em; font-family:var(--font-mono); }
-.field.is-invalid input,.field.is-invalid textarea{ border-color:var(--danger); }
-.form__note{ font-size:.84rem; color:var(--ink-faint); margin-top:14px; text-align:center; }
-.info-card .form__note{ color:var(--ink-faint); }
-.form__ok{
-  display:none; gap:12px; align-items:center; margin-top:16px; padding:14px 16px;
-  border-radius:12px; font-size:.93rem; color:var(--ok);
-  background:color-mix(in srgb, var(--ok) 13%, transparent);
-  border:1px solid color-mix(in srgb, var(--ok) 34%, transparent);
+.faq__item summary::-webkit-details-marker{ display:none; }
+.faq__item summary:hover{ color:var(--brand-text); }
+.faq__item summary svg{
+  width:20px; height:20px; flex:none; color:var(--accent-text);
+  transition:transform .3s var(--ease);
 }
-.form__ok.is-visible{ display:flex; animation:popIn .35s var(--ease); }
-@keyframes popIn{ from{ transform:translateY(14px) scale(.97); opacity:0; } to{ transform:none; opacity:1; } }
-.form__ok svg{ width:20px; height:20px; flex:none; }
+.faq__item[open] summary svg{ transform:rotate(45deg); }
+.faq__body{ padding:0 clamp(18px,2.4vw,26px) 22px; }
+.faq__body p{ color:var(--ink-soft); font-size:.95rem; max-width:64ch; }
 
 .info-card{
   display:flex; flex-direction:column;
@@ -588,6 +595,7 @@ p{ margin:0; }
     <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" stroke-width="1.6"/><path d="m8 12.4 2.6 2.6L16 9.6"/></symbol>
     <symbol id="i-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-ruler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8" width="19" height="8" rx="1.5"/><path d="M6.5 8v3M10 8v4M13.5 8v3M17 8v4"/></symbol>
@@ -608,6 +616,7 @@ p{ margin:0; }
       <a href="#hero">Anasayfa</a>
       <a href="#neden-biz">Neden Biz</a>
       <a href="#hizmetler">Hizmetler</a>
+      <a href="#sss">S.S.S.</a>
       <a href="#iletisim">İletişim</a>
     </nav>
 
@@ -831,46 +840,75 @@ p{ margin:0; }
 </section>
 
 <!-- ===================== İLETİŞİM ===================== -->
+<!-- ===================== SIKÇA SORULAN SORULAR ===================== -->
+<section class="section section--alt" id="sss">
+  <div class="container">
+    <div class="sect-head reveal">
+      <p class="eyebrow">Sıkça Sorulan Sorular</p>
+      <h2>Müşterilerimizin en çok sorduğu sekiz soru</h2>
+      <p>Aramadan önce merak ettiğinizin cevabı burada olabilir. Sorunuz listede yoksa telefonla sorun, ücret çıkarmadan anlatalım.</p>
+    </div>
+
+    <div class="faq">
+        <details class="faq__item reveal">
+          <summary>Keşif ve ölçü ücretli mi?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>Hayır. Kahramanmaraş merkez ve çevre ilçelerde yerinde keşif ve ölçü ücretsizdir. Ölçüyü aldıktan sonra fiyatı yerinde söylüyoruz, karar tamamen size kalıyor.</p></div>
+        </details>
+        <details class="faq__item reveal" style="--d:40ms">
+          <summary>Ne kadar sürede geliyorsunuz?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>Merkez içinde ortalama 30 dakikada adresinize ulaşıyoruz. Acil durumlarda (kapanmayan kapı, kırılan cam, kilitli kalan pencere) aynı gün müdahale ediyoruz.</p></div>
+        </details>
+        <details class="faq__item reveal" style="--d:80ms">
+          <summary>Pencerem kapanmıyor, tamamen değiştirmem mi gerekir?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>Çoğu zaman hayır. Kapanmama sorununun büyük kısmı ispanyolet, menteşe veya kol arızasından kaynaklanır ve parça değişimiyle çözülür. Doğramanın tümünü değiştirmek çok daha nadiren gerekir.</p></div>
+        </details>
+        <details class="faq__item reveal" style="--d:120ms">
+          <summary>Pencereden rüzgar giriyor, ıslık sesi geliyor. Sebebi ne?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>Genellikle fitil (conta) yaşlanmasıdır. Fitil sertleşince kanat ile kasa arasında boşluk kalır; hem hava hem ses geçirir. Fitil değişimi kısa süren bir işlemdir ve ısı kaybını belirgin şekilde azaltır.</p></div>
+        </details>
+        <details class="faq__item reveal" style="--d:160ms">
+          <summary>Camın arasında buğulanma var, ne yapılabilir?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>Cam ünitesinin kenar contası bozulmuş, iki cam arasına nem girmiş demektir. Temizlenerek çözülmez, cam ünitesinin değişmesi gerekir. Doğrama sağlamsa kasayı değiştirmeye gerek kalmaz, sadece cam yenilenir.</p></div>
+        </details>
+        <details class="faq__item reveal" style="--d:200ms">
+          <summary>Sadece tamir mi yapıyorsunuz, yeni imalat da var mı?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>İkisini de yapıyoruz. Ölçüye özel yeni PVC kapı ve pencere imalatı, sürme sistemler, cam balkon, sineklik ve duşakabin montajının yanında mevcut doğramalarda bakım ve onarım hizmeti veriyoruz.</p></div>
+        </details>
+        <details class="faq__item reveal" style="--d:240ms">
+          <summary>Hangi bölgelere hizmet veriyorsunuz?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>Kahramanmaraş merkezde Onikişubat ve Dulkadiroğlu başta olmak üzere tüm mahallelere, ayrıca çevre ilçelere servis veriyoruz.</p></div>
+        </details>
+        <details class="faq__item reveal" style="--d:280ms">
+          <summary>Yaptığınız işin garantisi var mı?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+          <div class="faq__body"><p>Evet, işçilik garantilidir. Kullandığımız aksesuar ve profiller de üretici garantisi kapsamındadır. Garanti süresi ve kapsamı iş teslim edilirken paylaşılır.</p></div>
+        </details>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="iletisim">
   <div class="container">
     <div class="sect-head reveal">
       <p class="eyebrow">İletişim</p>
       <h2>Ölçü için gelelim, fiyatı yerinde konuşalım</h2>
-      <p>Formu doldurun ya da WhatsApp’tan fotoğraf gönderin — çoğu işte fotoğraf ve kaba ölçüyle ön fiyat verebiliyoruz.</p>
+      <p>Arayın ya da WhatsApp’tan fotoğraf gönderin — çoğu işte fotoğraf ve kaba ölçüyle ön fiyat verebiliyoruz.</p>
     </div>
 
     <div class="contact">
-      <!-- Form -->
-      <form class="form reveal" id="contactForm" novalidate>
-        <div class="field">
-          <label for="ad">Ad Soyad</label>
-          <input type="text" id="ad" name="ad" placeholder="Örn. Mehmet Demir" autocomplete="name" required>
-          <span class="err" data-err-for="ad"></span>
-        </div>
+      <!-- Doğrudan iletişim -->
+      <div class="cta-card reveal">
+        <h3>Tek telefonla hallolur</h3>
+        <p>Arayın, işi anlatın. Çoğu onarımda fiyatı telefonda söyleyebiliyoruz;
+           yeni imalatta aynı gün ölçüye geliyoruz.</p>
 
-        <div class="field">
-          <label for="telefon">Telefon</label>
-          <input type="tel" id="telefon" name="telefon" placeholder="05xx xxx xx xx" autocomplete="tel" required>
-          <span class="err" data-err-for="telefon"></span>
-        </div>
+        <a class="cta-card__tel" href="tel:+905464761071">0546 476 10 71</a>
 
-        <div class="field">
-          <label for="mesaj">Mesajınız</label>
-          <textarea id="mesaj" name="mesaj" placeholder="Hangi iş için? Örn. salon için 2 adet sürme pencere ölçüsü, ya da balkon kapısı kapanmıyor." required></textarea>
-          <span class="err" data-err-for="mesaj"></span>
-        </div>
+        <a class="btn btn--brand btn--block" href="tel:+905464761071">
+          <svg aria-hidden="true"><use href="#i-phone"/></svg> Hemen Ara
+        </a>
 
-        <button class="btn btn--brand btn--block" type="submit">
-          Teklif İste <svg aria-hidden="true"><use href="#i-arrow-right"/></svg>
-        </button>
-
-        <p class="form__note">Bilgileriniz yalnızca size dönüş yapmak için kullanılır.</p>
-
-        <p class="form__ok" id="formOk" role="status">
-          <svg aria-hidden="true"><use href="#i-check"/></svg>
-          <span>Talebiniz alındı. En geç 15 dakika içinde sizi arayacağız.</span>
-        </p>
-      </form>
+        <p class="note">Pazartesi – Cumartesi, 08:00 – 20:00 arası açığız.</p>
+      </div>
 
       <!-- Bilgi kartı -->
       <aside class="info-card reveal" style="--d:120ms">
@@ -904,7 +942,7 @@ p{ margin:0; }
           <svg aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp’tan Yaz
         </a>
 
-        <p class="form__note">Fotoğraf gönderin, ön fiyatı hemen söyleyelim.</p>
+        <p class="note">Fotoğraf gönderin, ön fiyatı hemen söyleyelim.</p>
       </aside>
     </div>
   </div>
@@ -978,7 +1016,6 @@ p{ margin:0; }
    1) Header / ilerleme / aktif menü   2) Mobil menü
    3) Scroll beliriş animasyonu        4) Sayaçlar
    5) Buton dalga (ripple) efekti      6) Sonsuz kayan şerit
-   7) Form doğrulama
    ========================================================= */
 (function () {
   "use strict";
@@ -1111,53 +1148,6 @@ p{ margin:0; }
       $$("[id]", copy).forEach(el => el.removeAttribute("id"));
       track.appendChild(copy);
     });
-  });
-
-  /* ---------- 7) FORM DOĞRULAMA -------------------------- */
-  const form = $("#contactForm");
-  const okBox = $("#formOk");
-
-  const RULES = {
-    ad:      v => v.trim().length >= 3 || "Lütfen ad ve soyadınızı yazın.",
-    telefon: v => /^(\+?90|0)?\s?5\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(v.trim())
-                  || "Telefonu 05xx xxx xx xx biçiminde girin.",
-    mesaj:   v => v.trim().length >= 10 || "Arızayı birkaç kelimeyle anlatın (en az 10 karakter)."
-  };
-
-  function validate(input) {
-    const res = RULES[input.name](input.value);
-    const field = input.closest(".field");
-    const err = $('[data-err-for="' + input.name + '"]', field);
-    const ok = res === true;
-    field.classList.toggle("is-invalid", !ok);
-    err.textContent = ok ? "" : res;
-    input.setAttribute("aria-invalid", String(!ok));
-    return ok;
-  }
-
-  $$("#contactForm input, #contactForm textarea").forEach(el => {
-    el.addEventListener("blur", () => validate(el));
-    el.addEventListener("input", () => {
-      if (el.closest(".field").classList.contains("is-invalid")) validate(el);
-    });
-  });
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    const fields = $$("#contactForm input, #contactForm textarea");
-    const allOk = fields.map(validate).every(Boolean);
-
-    if (!allOk) {
-      const first = $(".field.is-invalid input, .field.is-invalid textarea");
-      if (first) first.focus();
-      okBox.classList.remove("is-visible");
-      return;
-    }
-
-    /* Gerçek gönderim için burayı kendi uç noktanızla değiştirin:
-       fetch("/api/teklif", { method:"POST", body:new FormData(form) }) */
-    okBox.classList.add("is-visible");
-    form.reset();
   });
 
   /* ---------- Yıl + beliriş gözlemcisini başlat ---------- */

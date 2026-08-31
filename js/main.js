@@ -3,7 +3,6 @@
    1) Header / ilerleme / aktif menü   2) Mobil menü
    3) Scroll beliriş animasyonu        4) Sayaçlar
    5) Buton dalga (ripple) efekti      6) Sonsuz kayan şerit
-   7) Form doğrulama
    ========================================================= */
 (function () {
   "use strict";
@@ -136,53 +135,6 @@
       $$("[id]", copy).forEach(el => el.removeAttribute("id"));
       track.appendChild(copy);
     });
-  });
-
-  /* ---------- 7) FORM DOĞRULAMA -------------------------- */
-  const form = $("#contactForm");
-  const okBox = $("#formOk");
-
-  const RULES = {
-    ad:      v => v.trim().length >= 3 || "Lütfen ad ve soyadınızı yazın.",
-    telefon: v => /^(\+?90|0)?\s?5\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(v.trim())
-                  || "Telefonu 05xx xxx xx xx biçiminde girin.",
-    mesaj:   v => v.trim().length >= 10 || "Arızayı birkaç kelimeyle anlatın (en az 10 karakter)."
-  };
-
-  function validate(input) {
-    const res = RULES[input.name](input.value);
-    const field = input.closest(".field");
-    const err = $('[data-err-for="' + input.name + '"]', field);
-    const ok = res === true;
-    field.classList.toggle("is-invalid", !ok);
-    err.textContent = ok ? "" : res;
-    input.setAttribute("aria-invalid", String(!ok));
-    return ok;
-  }
-
-  $$("#contactForm input, #contactForm textarea").forEach(el => {
-    el.addEventListener("blur", () => validate(el));
-    el.addEventListener("input", () => {
-      if (el.closest(".field").classList.contains("is-invalid")) validate(el);
-    });
-  });
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    const fields = $$("#contactForm input, #contactForm textarea");
-    const allOk = fields.map(validate).every(Boolean);
-
-    if (!allOk) {
-      const first = $(".field.is-invalid input, .field.is-invalid textarea");
-      if (first) first.focus();
-      okBox.classList.remove("is-visible");
-      return;
-    }
-
-    /* Gerçek gönderim için burayı kendi uç noktanızla değiştirin:
-       fetch("/api/teklif", { method:"POST", body:new FormData(form) }) */
-    okBox.classList.add("is-visible");
-    form.reset();
   });
 
   /* ---------- Yıl + beliriş gözlemcisini başlat ---------- */
