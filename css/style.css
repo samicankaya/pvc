@@ -456,6 +456,14 @@ p{ margin:0; }
 .footer-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.2fr; gap:clamp(26px,4vw,52px); }
 .site-footer h4{ color:var(--ink); font-size:.98rem; margin-bottom:16px; }
 .site-footer p{ font-size:.93rem; }
+.footer-review{ margin-top:12px; color:var(--ink-faint); }
+.footer-review a{
+  color:var(--brand-text); font-weight:600;
+  text-decoration:underline; text-underline-offset:3px;
+  text-decoration-color:color-mix(in srgb, var(--accent) 45%, transparent);
+  transition:text-decoration-color .25s var(--ease), color .25s var(--ease);
+}
+.footer-review a:hover{ color:var(--ink); text-decoration-color:var(--accent); }
 .footer-brand{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
 .footer-brand .brand__mark{ height:72px; }
 .footer-links{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
