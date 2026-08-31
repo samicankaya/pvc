@@ -397,23 +397,8 @@ p{ margin:0; }
 /* ---------- 10) İLETİŞİM --------------------------------- */
 /* İki kolon eşit yükseklikte; buton blokları alta yaslanınca
    "Teklif İste" ile "WhatsApp’tan Yaz" aynı hizaya oturur. */
-.contact{ display:grid; grid-template-columns:1fr .95fr; gap:clamp(30px,4vw,58px); align-items:stretch; }
-.cta-card{
-  display:flex; flex-direction:column;
-  background:var(--surface); border:1px solid var(--line); border-radius:18px;
-  padding:clamp(24px,3vw,36px); box-shadow:var(--shadow-1);
-}
-.cta-card h3{ color:var(--ink); margin-bottom:8px; }
-.cta-card > p{ color:var(--ink-soft); font-size:.95rem; }
-.cta-card__tel{
-  display:block; margin:26px 0 22px;
-  font-family:var(--font-display); font-weight:800;
-  font-size:clamp(1.9rem,4.4vw,2.6rem); letter-spacing:-.02em;
-  color:var(--ink); text-align:center; white-space:nowrap;
-  transition:color .3s var(--ease);
-}
-.cta-card__tel:hover{ color:var(--brand-text); }
-.cta-card .btn{ margin-top:auto; }
+.contact{ display:grid; justify-content:center; }
+.contact .info-card{ width:min(620px,100%); }
 .note{ font-size:.84rem; color:var(--ink-faint); margin-top:14px; text-align:center; }
 .info-card .note{ color:var(--ink-faint); }
 
@@ -542,7 +527,6 @@ p{ margin:0; }
   .hero__inner{ grid-template-columns:1fr; }
   .hero__art{ max-width:540px; margin-inline:auto; }
   .about{ grid-template-columns:1fr; }
-  .contact{ grid-template-columns:1fr; }
   .footer-grid{ grid-template-columns:1fr 1fr; }
 }
 @media (max-width:860px){
@@ -891,25 +875,10 @@ p{ margin:0; }
     <div class="sect-head reveal">
       <p class="eyebrow">İletişim</p>
       <h2>Ölçü için gelelim, fiyatı yerinde konuşalım</h2>
-      <p>Arayın ya da WhatsApp’tan fotoğraf gönderin — çoğu işte fotoğraf ve kaba ölçüyle ön fiyat verebiliyoruz.</p>
+      <p>WhatsApp’tan fotoğraf gönderin — çoğu işte fotoğraf ve kaba ölçüyle ön fiyat verebiliyoruz. Dilerseniz numaradan doğrudan arayın.</p>
     </div>
 
     <div class="contact">
-      <!-- Doğrudan iletişim -->
-      <div class="cta-card reveal">
-        <h3>Tek telefonla hallolur</h3>
-        <p>Arayın, işi anlatın. Çoğu onarımda fiyatı telefonda söyleyebiliyoruz;
-           yeni imalatta aynı gün ölçüye geliyoruz.</p>
-
-        <a class="cta-card__tel" href="tel:+905464761071">0546 476 10 71</a>
-
-        <a class="btn btn--brand btn--block" href="tel:+905464761071">
-          <svg aria-hidden="true"><use href="#i-phone"/></svg> Hemen Ara
-        </a>
-
-        <p class="note">Pazartesi – Cumartesi, 08:00 – 20:00 arası açığız.</p>
-      </div>
-
       <!-- Bilgi kartı -->
       <aside class="info-card reveal" style="--d:120ms">
         <h3>Prestij PVC</h3>
