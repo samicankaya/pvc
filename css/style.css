@@ -7,37 +7,37 @@
 
 /* ---------- 1) TOKENLAR ---------------------------------- */
 :root{
-  /* Yüzeyler — nötrler hafif mavi kırılımlı */
-  --ground:#F5F7FC;
+  /* Yüzeyler — logonun nötr-sıcak grileri (mavi kırılım yok) */
+  --ground:#E9E8E6;
   --surface:#FFFFFF;
-  --surface-2:#EDF1FA;
-  --line:#D8E0F0;
-  --line-soft:#E7ECF7;
+  --surface-2:#DFDDD8;
+  --line:#D2D0CC;
+  --line-soft:#DFDDD9;
 
-  /* Metin */
-  --ink:#0C1526;
-  --ink-soft:#4A5878;
-  --ink-faint:#7C89A6;
+  /* Metin — logonun kömür siyahı ve gümüşü */
+  --ink:#141414;
+  --ink-soft:#57565A;
+  --ink-faint:#62605A;
 
-  /* Marka */
-  --brand:#1E3A8A;        /* dolu zeminler     */
-  --brand-deep:#14285F;   /* koyu varyant      */
-  --brand-text:#1E3A8A;   /* zemin üstü yazı   */
-  --brand-tint:#E7EDFB;   /* yumuşak dolgu     */
+  /* Yapısal koyu (logo zemini) */
+  --brand:#1A1A1C;
+  --brand-deep:#0B0B0C;
+  --brand-text:#805816;    /* gri zeminde okunur altın */
+  --brand-tint:#F2EBDD;    /* yumuşak altın dolgu        */
 
-  /* Vurgu */
-  --accent:#F59E0B;
-  --accent-hi:#FFC24D;
-  --accent-ink:#3A2703;
-  --accent-text:#A9660A;   /* beyaz zeminde okunur amber */
+  /* Vurgu — logodaki antik altın (#B08848 ailesi) */
+  --accent:#B0813C;
+  --accent-hi:#CE9E4E;
+  --accent-ink:#17130A;
+  --accent-text:#805816;
 
   --ok:#0F7A57;
-  --danger:#C93A2C;
+  --danger:#B23A2C;
 
   /* Ölçü ve gölge */
   --radius:14px;
-  --shadow-1:0 1px 2px rgba(12,21,38,.06), 0 8px 24px -12px rgba(12,21,38,.18);
-  --shadow-2:0 18px 44px -18px rgba(30,58,138,.42), 0 4px 12px rgba(12,21,38,.08);
+  --shadow-1:0 1px 2px rgba(20,20,20,.06), 0 8px 24px -12px rgba(20,20,20,.16);
+  --shadow-2:0 18px 44px -18px rgba(20,20,20,.30), 0 4px 12px rgba(20,20,20,.08);
   --maxw:1200px;
   --gutter:clamp(18px, 4vw, 40px);
   --sect-y:clamp(64px, 8vw, 116px);
@@ -49,7 +49,7 @@
 
   /* Header ölçüleri */
   --header-h:96px;
-  --logo:64px;
+  --logo:60px;        /* yatay logonun yüksekliği */
 
   --ease:cubic-bezier(.2,.7,.2,1);
 }
@@ -149,11 +149,11 @@ p{ margin:0; }
 .btn:hover{ transform:translateY(-3px); }
 .btn:active{ transform:translateY(-1px) scale(.985); }
 
-.btn--accent{ background:var(--accent); color:var(--accent-ink); box-shadow:0 12px 26px -12px rgba(245,158,11,.9); }
-.btn--accent:hover{ background:var(--accent-hi); box-shadow:0 20px 38px -14px rgba(245,158,11,.95); }
+.btn--accent{ background:var(--accent); color:var(--accent-ink); box-shadow:0 12px 26px -12px rgba(176,129,60,.8); }
+.btn--accent:hover{ background:var(--accent-hi); box-shadow:0 20px 38px -14px rgba(176,129,60,.85); }
 
-.btn--brand{ background:var(--brand); color:#fff; box-shadow:0 12px 26px -14px rgba(30,58,138,.85); }
-.btn--brand:hover{ background:var(--brand-deep); box-shadow:0 20px 38px -16px rgba(30,58,138,.9); }
+.btn--brand{ background:var(--brand); color:#fff; box-shadow:0 12px 26px -14px rgba(20,20,20,.8); }
+.btn--brand:hover{ background:var(--brand-deep); box-shadow:0 20px 38px -16px rgba(20,20,20,.85); }
 
 .btn--ghost{ background:var(--surface); border-color:var(--line); color:var(--ink); box-shadow:var(--shadow-1); }
 .btn--ghost:hover{ border-color:var(--brand-text); color:var(--brand-text); }
@@ -185,26 +185,17 @@ p{ margin:0; }
   background:color-mix(in srgb, var(--surface) 90%, transparent);
   backdrop-filter:saturate(180%) blur(14px);
   border-bottom-color:var(--line);
-  box-shadow:0 10px 30px -22px rgba(12,21,38,.5);
+  box-shadow:0 10px 30px -22px rgba(20,20,20,.45);
 }
 .header-inner{ display:flex; align-items:center; gap:20px; min-height:var(--header-h); }
 
 .brand{ display:flex; align-items:center; gap:14px; margin-right:auto; }
+/* Yatay yazı-logosu: yükseklik sabit, genişlik orana göre */
 .brand__mark{
-  width:var(--logo); height:var(--logo); flex:none;
-  border-radius:50%; object-fit:cover; background:#fff;
-  box-shadow:0 3px 14px rgba(12,21,38,.14);
+  height:var(--logo); width:auto; flex:none;
+  border-radius:10px;
+  box-shadow:0 4px 16px rgba(20,20,20,.22);
 }
-.brand__name{
-  font-family:var(--font-display); font-weight:800; font-size:1.16rem;
-  line-height:1.05; color:var(--ink);
-}
-.brand__name span{
-  display:block; font-family:var(--font-mono); font-weight:400;
-  font-size:.63rem; letter-spacing:.22em; text-transform:uppercase;
-  color:var(--brand-text); margin-top:4px;
-}
-
 .nav{ display:flex; align-items:center; gap:4px; }
 .nav a{
   position:relative; padding:9px 14px; border-radius:999px;
@@ -290,7 +281,7 @@ p{ margin:0; }
 
 /* Hero teknik çizimi */
 .hero__art{ position:relative; }
-.hero__art svg{ width:100%; height:auto; filter:drop-shadow(0 30px 50px rgba(12,21,38,.18)); }
+.hero__art svg{ width:100%; height:auto; filter:drop-shadow(0 30px 50px rgba(20,20,20,.20)); }
 .dim-line{ stroke-dasharray:300; stroke-dashoffset:300; animation:draw 1.6s var(--ease) .45s forwards; }
 @keyframes draw{ to{ stroke-dashoffset:0; } }
 .glass-shine{ animation:shine 6s ease-in-out infinite; }
@@ -474,8 +465,7 @@ p{ margin:0; }
 .site-footer h4{ color:var(--ink); font-size:.98rem; margin-bottom:16px; }
 .site-footer p{ font-size:.93rem; }
 .footer-brand{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-.footer-brand .brand__mark{ width:56px; height:56px; }
-.footer-brand .brand__name{ color:var(--ink); }
+.footer-brand .brand__mark{ height:72px; }
 .footer-links{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
 .footer-links a{ font-size:.93rem; transition:color .25s var(--ease), padding-left .25s var(--ease); }
 .footer-links a:hover{ color:var(--brand-text); padding-left:8px; }
@@ -544,7 +534,7 @@ p{ margin:0; }
   .footer-grid{ grid-template-columns:1fr 1fr; }
 }
 @media (max-width:860px){
-  :root{ --header-h:76px; --logo:52px; }
+  :root{ --header-h:74px; --logo:44px; }
 
   .nav{
     position:fixed; inset:var(--header-h) 0 auto 0;
@@ -566,8 +556,7 @@ p{ margin:0; }
 }
 @media (max-width:520px){
   .btn{ width:100%; }
-  .brand{ gap:10px; }
-  .brand__name{ font-size:1rem; }
+  :root{ --logo:38px; }
   .hero__stats{ gap:18px; }
   .floaters{ right:14px; bottom:14px; }
 }
