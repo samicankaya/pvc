@@ -139,13 +139,13 @@
   });
 
   /* ---------- 7) SERVİS DURUMU (Türkiye saatine göre) ----
-     Açık: Pazartesi–Cumartesi 08:00–21:00. Pazar kapalı.
+     Açık: Pazartesi–Cumartesi 08:00–20:00. Pazar kapalı.
      Saat, ziyaretçinin cihaz saatinden bağımsız olarak
      Europe/Istanbul saat diliminden okunur.                */
   const durumKutu = $("#servis-durumu");
 
   const ACILIS = 8 * 60;    // 08:00
-  const KAPANIS = 21 * 60;  // 21:00
+  const KAPANIS = 20 * 60;  // 20:00
   const GUNLER = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
 
   /* Europe/Istanbul'daki gün (0=Pazar) ve dakika değerini döndürür. */
@@ -184,7 +184,7 @@
     $("[data-durum-baslik]", durumKutu).textContent =
       acik ? "Şu an servis açık" : "Şu an kapalıyız";
     $("[data-durum-alt]", durumKutu).textContent =
-      acik ? "Bugün 21:00'e kadar · Yerinde keşif"
+      acik ? "Bugün 20:00'e kadar · Yerinde keşif"
            : sonrakiAcilis(z.gun, z.dakika);
 
     durumKutu.classList.toggle("is-kapali", !acik);
