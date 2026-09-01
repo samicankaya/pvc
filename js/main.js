@@ -3,6 +3,7 @@
    1) Header / ilerleme / aktif menü   2) Mobil menü
    3) Scroll beliriş animasyonu        4) Sayaçlar
    5) Buton dalga (ripple) efekti      6) Sonsuz kayan şerit
+   7) Servis durumu (Türkiye saati)
    ========================================================= */
 (function () {
   "use strict";
@@ -136,6 +137,61 @@
       track.appendChild(copy);
     });
   });
+
+  /* ---------- 7) SERVİS DURUMU (Türkiye saatine göre) ----
+     Açık: Pazartesi–Cumartesi 08:00–21:00. Pazar kapalı.
+     Saat, ziyaretçinin cihaz saatinden bağımsız olarak
+     Europe/Istanbul saat diliminden okunur.                */
+  const durumKutu = $("#servis-durumu");
+
+  const ACILIS = 8 * 60;    // 08:00
+  const KAPANIS = 21 * 60;  // 21:00
+  const GUNLER = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+
+  /* Europe/Istanbul'daki gün (0=Pazar) ve dakika değerini döndürür. */
+  function turkiyeZamani() {
+    const parca = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Europe/Istanbul",
+      weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false
+    }).formatToParts(new Date());
+
+    const al = tur => (parca.find(p => p.type === tur) || {}).value;
+    const gunler = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    const gun = gunler[al("weekday")];
+    // Bazı motorlar gece yarısını "24" olarak verir; 0'a çeviriyoruz.
+    const dakika = (parseInt(al("hour"), 10) % 24) * 60 + parseInt(al("minute"), 10);
+
+    return gun === undefined ? null : { gun, dakika };
+  }
+
+  /* Kapalıyken bir sonraki açılışın ne zaman olduğunu yazar. */
+  function sonrakiAcilis(gun, dakika) {
+    if (gun !== 0 && dakika < ACILIS) return "Bugün 08:00'de açılıyoruz";
+    // Bugünün işi bitti (ya da Pazar) — sıradaki açık günü bul.
+    let ileri = 1;
+    while (((gun + ileri) % 7) === 0) ileri++;   // Pazar'ı atla
+    const hedef = (gun + ileri) % 7;
+    return (ileri === 1 ? "Yarın" : GUNLER[hedef]) + " 08:00'de açılıyoruz";
+  }
+
+  function durumuYaz() {
+    if (!durumKutu) return;
+    const z = turkiyeZamani();
+    if (!z) return;   // saat dilimi okunamadıysa HTML'deki genel bilgi kalsın
+
+    const acik = z.gun !== 0 && z.dakika >= ACILIS && z.dakika < KAPANIS;
+
+    $("[data-durum-baslik]", durumKutu).textContent =
+      acik ? "Şu an servis açık" : "Şu an kapalıyız";
+    $("[data-durum-alt]", durumKutu).textContent =
+      acik ? "Bugün 21:00'e kadar · Yerinde keşif"
+           : sonrakiAcilis(z.gun, z.dakika);
+
+    durumKutu.classList.toggle("is-kapali", !acik);
+  }
+
+  durumuYaz();
+  setInterval(durumuYaz, 60000);   // dakikada bir tazele
 
   /* ---------- Yıl + beliriş gözlemcisini başlat ---------- */
   $("#year").textContent = new Date().getFullYear();

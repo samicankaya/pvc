@@ -312,6 +312,10 @@ p{ margin:0; }
   border:2px solid var(--ok); animation:pulse 2s ease-out infinite;
 }
 @keyframes pulse{ 0%{ transform:scale(.6); opacity:.7; } 100%{ transform:scale(1.4); opacity:0; } }
+
+/* Servis kapalıyken: yeşil nokta söner, atma animasyonu durur */
+.hero__badge.is-kapali .pulse-dot{ background:var(--ink-faint); }
+.hero__badge.is-kapali .pulse-dot::after{ display:none; }
 @keyframes float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-12px); } }
 
 /* Hizmet şeridi */
@@ -715,11 +719,11 @@ p{ margin:0; }
         <text x="122" y="382" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace" font-size="12">70 mm 5 ODACIKLI PROFİL</text>
       </svg>
 
-      <div class="hero__badge">
+      <div class="hero__badge" id="servis-durumu">
         <span class="pulse-dot" aria-hidden="true"></span>
         <span>
-          <strong>Bugün servis açık</strong>
-          <span>08:00 – 21:00 · Yerinde keşif</span>
+          <strong data-durum-baslik>Pazartesi – Cumartesi</strong>
+          <span data-durum-alt>08:00 – 21:00 · Yerinde keşif</span>
         </span>
       </div>
     </div>
@@ -904,7 +908,7 @@ p{ margin:0; }
           </li>
           <li>
             <span class="ico"><svg aria-hidden="true"><use href="#i-clock"/></svg></span>
-            <span><b>08:00 – 20:00</b><span>Pazartesi – Cumartesi</span></span>
+            <span><b>08:00 – 21:00</b><span>Pazartesi – Cumartesi · Pazar kapalı</span></span>
           </li>
           <li>
             <span class="ico"><svg aria-hidden="true"><use href="#i-ig"/></svg></span>
@@ -1002,6 +1006,7 @@ p{ margin:0; }
    1) Header / ilerleme / aktif menü   2) Mobil menü
    3) Scroll beliriş animasyonu        4) Sayaçlar
    5) Buton dalga (ripple) efekti      6) Sonsuz kayan şerit
+   7) Servis durumu (Türkiye saati)
    ========================================================= */
 (function () {
   "use strict";
@@ -1135,6 +1140,61 @@ p{ margin:0; }
       track.appendChild(copy);
     });
   });
+
+  /* ---------- 7) SERVİS DURUMU (Türkiye saatine göre) ----
+     Açık: Pazartesi–Cumartesi 08:00–21:00. Pazar kapalı.
+     Saat, ziyaretçinin cihaz saatinden bağımsız olarak
+     Europe/Istanbul saat diliminden okunur.                */
+  const durumKutu = $("#servis-durumu");
+
+  const ACILIS = 8 * 60;    // 08:00
+  const KAPANIS = 21 * 60;  // 21:00
+  const GUNLER = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+
+  /* Europe/Istanbul'daki gün (0=Pazar) ve dakika değerini döndürür. */
+  function turkiyeZamani() {
+    const parca = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Europe/Istanbul",
+      weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false
+    }).formatToParts(new Date());
+
+    const al = tur => (parca.find(p => p.type === tur) || {}).value;
+    const gunler = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    const gun = gunler[al("weekday")];
+    // Bazı motorlar gece yarısını "24" olarak verir; 0'a çeviriyoruz.
+    const dakika = (parseInt(al("hour"), 10) % 24) * 60 + parseInt(al("minute"), 10);
+
+    return gun === undefined ? null : { gun, dakika };
+  }
+
+  /* Kapalıyken bir sonraki açılışın ne zaman olduğunu yazar. */
+  function sonrakiAcilis(gun, dakika) {
+    if (gun !== 0 && dakika < ACILIS) return "Bugün 08:00'de açılıyoruz";
+    // Bugünün işi bitti (ya da Pazar) — sıradaki açık günü bul.
+    let ileri = 1;
+    while (((gun + ileri) % 7) === 0) ileri++;   // Pazar'ı atla
+    const hedef = (gun + ileri) % 7;
+    return (ileri === 1 ? "Yarın" : GUNLER[hedef]) + " 08:00'de açılıyoruz";
+  }
+
+  function durumuYaz() {
+    if (!durumKutu) return;
+    const z = turkiyeZamani();
+    if (!z) return;   // saat dilimi okunamadıysa HTML'deki genel bilgi kalsın
+
+    const acik = z.gun !== 0 && z.dakika >= ACILIS && z.dakika < KAPANIS;
+
+    $("[data-durum-baslik]", durumKutu).textContent =
+      acik ? "Şu an servis açık" : "Şu an kapalıyız";
+    $("[data-durum-alt]", durumKutu).textContent =
+      acik ? "Bugün 21:00'e kadar · Yerinde keşif"
+           : sonrakiAcilis(z.gun, z.dakika);
+
+    durumKutu.classList.toggle("is-kapali", !acik);
+  }
+
+  durumuYaz();
+  setInterval(durumuYaz, 60000);   // dakikada bir tazele
 
   /* ---------- Yıl + beliriş gözlemcisini başlat ---------- */
   $("#year").textContent = new Date().getFullYear();
