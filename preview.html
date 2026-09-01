@@ -450,7 +450,8 @@ p{ margin:0; }
 .info-list b{ display:block; font-family:var(--font-display); font-size:1rem; color:var(--ink); }
 .info-list span{ color:var(--ink-soft); font-size:.9rem; }
 .info-list a:hover{ color:var(--brand-text); }
-.info-card .btn{ margin-top:auto; }
+.info-card .card-actions{ margin-top:auto; display:grid; gap:12px; }
+.info-card .card-actions .btn{ margin-top:0; }
 
 /* ---------- 11) FOOTER ----------------------------------- */
 .site-footer{
@@ -915,9 +916,14 @@ p{ margin:0; }
           </li>
         </ul>
 
-        <a class="btn btn--wa btn--block" href="https://wa.me/905464761071?text=Merhaba%2C%20PVC%20tamiri%20i%C3%A7in%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener">
-          <svg aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp’tan Yaz
-        </a>
+        <div class="card-actions">
+          <a class="btn btn--wa btn--block" href="https://wa.me/905464761071?text=Merhaba%2C%20PVC%20tamiri%20i%C3%A7in%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp’tan Yaz
+          </a>
+          <a class="btn btn--accent btn--block" href="tel:+905464761071">
+            <svg aria-hidden="true"><use href="#i-phone"/></svg> Hemen Ara
+          </a>
+        </div>
 
         <p class="note">Fotoğraf gönderin, ön fiyatı hemen söyleyelim.</p>
       </aside>
